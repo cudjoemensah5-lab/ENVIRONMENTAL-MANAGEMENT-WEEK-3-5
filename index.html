@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BGEC113 – Combined Exam Hub | HangOut Publications</title>
+<style>
+  :root {
+    --navy: #002147;
+    --gold: #C9A84C;
+    --gold2: #F5D282;
+    --kente1: #CC0000;
+    --kente2: #009900;
+    --kente3: #FFD700;
+    --kente4: #000000;
+    --white: #FFFFFF;
+    --light: #f4f0e8;
+    --shadow: 0 8px 32px rgba(0,33,71,0.18);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #001a38 0%, #002d5c 40%, #1a4a00 70%, #3a2000 100%);
+    min-height: 100vh;
+    color: var(--navy);
+  }
+  .kente-border {
+    height: 14px;
+    background: repeating-linear-gradient(90deg,
+      #CC0000 0px, #CC0000 20px, #FFD700 20px, #FFD700 40px,
+      #009900 40px, #009900 60px, #000000 60px, #000000 80px,
+      #FFD700 80px, #FFD700 100px, #CC0000 100px, #CC0000 120px);
+  }
+  .site-header {
+    background: linear-gradient(90deg, var(--navy) 0%, #003580 60%, #002147 100%);
+    padding: 18px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .logo-area { display: flex; align-items: center; gap: 18px; }
+  .upsa-logo {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 900; color: var(--navy);
+    text-align: center; line-height: 1.2; border: 3px solid var(--gold2);
+    box-shadow: 0 0 18px rgba(201,168,76,0.5); flex-shrink: 0;
+  }
+  .header-text h1 { color: var(--gold2); font-size: 1.3rem; font-weight: 800; letter-spacing: 1px; }
+  .header-text p { color: #aac4ff; font-size: 0.82rem; margin-top: 2px; }
+  .hangout-logo {
+    background: linear-gradient(135deg, var(--gold) 0%, #e8c050 100%);
+    border-radius: 12px; padding: 8px 18px;
+    display: flex; flex-direction: column; align-items: center;
+    box-shadow: 0 4px 16px rgba(201,168,76,0.4); flex-shrink: 0;
+  }
+  .hangout-logo .h-icon { font-size: 1.8rem; line-height: 1; }
+  .hangout-logo .h-name { font-size: 0.65rem; font-weight: 900; color: var(--navy); letter-spacing: 1.5px; margin-top: 2px; }
+  .screen { display: none; padding: 30px 20px; max-width: 860px; margin: 0 auto; }
+  .screen.active { display: block; }
+
+  /* HOME SCREEN */
+  #screen-home { text-align: center; }
+  .home-title { font-size: 2.2rem; font-weight: 900; color: var(--gold2); text-shadow: 2px 2px 12px rgba(0,0,0,0.5); margin-bottom: 10px; }
+  .home-sub { color: #ccd9ff; font-size: 1rem; margin-bottom: 32px; }
+  .week-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; margin: 30px 0; }
+  .week-card {
+    background: rgba(255,255,255,0.08); border: 2px solid rgba(201,168,76,0.4);
+    border-radius: 18px; padding: 28px 20px; text-align: center;
+    backdrop-filter: blur(10px); cursor: pointer;
+    transition: all 0.25s; position: relative; overflow: hidden;
+  }
+  .week-card:hover { border-color: var(--gold); background: rgba(255,255,255,0.13); transform: translateY(-4px); box-shadow: 0 12px 36px rgba(201,168,76,0.25); }
+  .week-card .wc-num { font-size: 3rem; font-weight: 900; color: var(--gold2); line-height: 1; }
+  .week-card .wc-label { color: var(--gold); font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin: 6px 0; }
+  .week-card .wc-title { color: #e0eaff; font-size: 0.9rem; font-weight: 600; line-height: 1.4; margin: 8px 0 16px; }
+  .week-card .wc-meta { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .week-card .wc-tag { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--gold2); font-size: 0.72rem; padding: 4px 10px; border-radius: 20px; }
+  .week-card .wc-status { position: absolute; top: 12px; right: 14px; font-size: 0.7rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; }
+  .status-open { background: #009900; color: white; }
+  .status-done { background: #0066cc; color: white; }
+
+  /* LANDING */
+  #screen-landing { text-align: center; }
+  .week-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+    color: var(--navy); font-size: 0.85rem; font-weight: 800;
+    padding: 6px 22px; border-radius: 30px; letter-spacing: 2px;
+    margin-bottom: 18px; text-transform: uppercase;
+  }
+  .landing-title { font-size: 2rem; font-weight: 900; color: var(--gold2); text-shadow: 2px 2px 12px rgba(0,0,0,0.5); line-height: 1.2; margin-bottom: 10px; }
+  .landing-sub { color: #ccd9ff; font-size: 1rem; margin-bottom: 30px; }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 26px 0; }
+  .info-card {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 14px; padding: 18px 12px; text-align: center; backdrop-filter: blur(8px);
+  }
+  .info-card .ic-icon { font-size: 2rem; margin-bottom: 6px; }
+  .info-card .ic-val { color: var(--gold2); font-size: 1.2rem; font-weight: 800; }
+  .info-card .ic-lbl { color: #aac4ff; font-size: 0.75rem; margin-top: 3px; }
+  .btn { display: inline-block; padding: 14px 36px; border: none; border-radius: 10px; cursor: pointer; font-size: 1rem; font-weight: 700; letter-spacing: 1px; transition: all 0.2s; text-decoration: none; }
+  .btn-primary { background: linear-gradient(135deg, var(--gold) 0%, #e8c050 100%); color: var(--navy); box-shadow: 0 4px 18px rgba(201,168,76,0.4); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.5); }
+  .btn-secondary { background: rgba(255,255,255,0.1); color: var(--gold2); border: 1px solid var(--gold); margin-left: 10px; }
+  .btn-secondary:hover { background: rgba(255,255,255,0.15); }
+  .btn-danger { background: #cc2200; color: white; }
+  .btn-success { background: #009900; color: white; }
+  .btn-whatsapp { background: #25D366; color: white; }
+  .btn-back { background: rgba(255,255,255,0.08); color: var(--gold2); border: 1px solid rgba(201,168,76,0.3); }
+  .adinkra-divider { display: flex; align-items: center; gap: 14px; margin: 24px 0; color: var(--gold); font-size: 1.4rem; justify-content: center; }
+  .adinkra-divider::before, .adinkra-divider::after { content: ''; flex: 1; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .form-card { background: rgba(255,255,255,0.95); border-radius: 20px; padding: 36px; box-shadow: var(--shadow); max-width: 520px; margin: 0 auto; }
+  .form-card h2 { color: var(--navy); font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; }
+  .form-card p { color: #555; font-size: 0.88rem; margin-bottom: 24px; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 0.82rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .form-group input, .form-group select { width: 100%; padding: 12px 14px; border-radius: 9px; border: 2px solid #ddd; font-size: 0.95rem; color: var(--navy); transition: border-color 0.2s; background: #fafafa; }
+  .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--gold); background: #fff; }
+  .token-box { background: #001a38; color: var(--gold2); font-size: 1.5rem; font-weight: 900; letter-spacing: 5px; padding: 16px; border-radius: 12px; text-align: center; margin: 16px 0; cursor: pointer; border: 2px dashed var(--gold); display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .token-input-area { display: flex; gap: 10px; }
+  .token-input-area input { flex: 1; padding: 14px; border-radius: 9px; border: 2px solid #ddd; font-size: 1.2rem; letter-spacing: 4px; text-align: center; font-weight: 700; color: var(--navy); text-transform: uppercase; }
+  .timer-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 999; background: linear-gradient(90deg, var(--navy), #002d5c); display: flex; align-items: center; justify-content: space-between; padding: 8px 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.3); border-bottom: 3px solid var(--gold); }
+  .timer-display { font-size: 1.5rem; font-weight: 900; color: var(--gold2); letter-spacing: 2px; font-variant-numeric: tabular-nums; }
+  .timer-display.danger { color: #ff4444; animation: blink 0.5s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .timer-label { color: #aac4ff; font-size: 0.78rem; }
+  .progress-wrap { flex: 1; margin: 0 20px; background: rgba(255,255,255,0.1); height: 8px; border-radius: 4px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #ff9900); border-radius: 4px; transition: width 0.5s; }
+  #screen-exam { padding-top: 80px; }
+  .q-container { max-width: 760px; margin: 0 auto; }
+  .q-header { background: linear-gradient(135deg, var(--navy), #002d5c); border-radius: 16px 16px 0 0; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--gold); }
+  .q-num { color: var(--gold2); font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; }
+  .q-score-live { color: #aac4ff; font-size: 0.82rem; }
+  .q-body { background: rgba(255,255,255,0.97); padding: 30px 28px; border-radius: 0 0 16px 16px; box-shadow: var(--shadow); }
+  .q-text { font-size: 1.05rem; font-weight: 600; color: var(--navy); line-height: 1.6; margin-bottom: 22px; }
+  .options { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .option-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 10px; border: 2px solid #e8e8e8; cursor: pointer; transition: all 0.18s; background: #fafafa; font-size: 0.97rem; color: #333; }
+  .option-item:hover { border-color: var(--gold); background: #fffbf0; color: var(--navy); }
+  .option-item.selected { border-color: var(--navy); background: #e8f0ff; color: var(--navy); font-weight: 600; }
+  .option-item.correct { border-color: #00aa44; background: #e6ffed; color: #005522; }
+  .option-item.wrong { border-color: #cc2200; background: #ffe6e2; color: #660000; }
+  .opt-letter { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; background: var(--navy); color: var(--gold2); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; }
+  .q-nav { display: flex; justify-content: flex-end; margin-top: 24px; gap: 12px; }
+  .popup-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 2000; align-items: center; justify-content: center; }
+  .popup-overlay.show { display: flex; }
+  .popup-card { background: linear-gradient(135deg, var(--navy) 0%, #002d5c 100%); border: 3px solid var(--gold); border-radius: 20px; padding: 36px; max-width: 480px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .popup-card h2 { color: var(--gold2); font-size: 1.5rem; margin-bottom: 14px; }
+  .popup-quote { color: #ccd9ff; font-size: 1.05rem; line-height: 1.7; font-style: italic; margin-bottom: 20px; }
+  .popup-lang { color: var(--gold); font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; font-weight: 700; }
+  #screen-results { padding-top: 20px; }
+  .result-card { background: rgba(255,255,255,0.97); border-radius: 20px; padding: 36px; box-shadow: var(--shadow); max-width: 720px; margin: 0 auto; }
+  .grade-badge { font-size: 4rem; font-weight: 900; width: 110px; height: 110px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 5px solid var(--gold); box-shadow: 0 0 30px rgba(201,168,76,0.4); }
+  .grade-A { background: #00aa44; color: white; }
+  .grade-B { background: #0066cc; color: white; }
+  .grade-C { background: #ff9900; color: white; }
+  .grade-D { background: #cc2200; color: white; }
+  .grade-F { background: #660000; color: white; }
+  .score-display { text-align: center; margin-bottom: 24px; }
+  .score-num { font-size: 2.8rem; font-weight: 900; color: var(--navy); }
+  .score-sub { color: #666; font-size: 1rem; }
+  .motivation-box { background: linear-gradient(135deg, #001a38 0%, #003580 100%); border: 2px solid var(--gold); border-radius: 14px; padding: 22px 26px; margin: 20px 0; text-align: center; }
+  .motivation-box p { color: #f5e4a8; font-style: italic; font-size: 1rem; line-height: 1.7; }
+  .motivation-box small { color: var(--gold); font-size: 0.75rem; letter-spacing: 2px; display: block; margin-top: 8px; }
+  .answer-breakdown { margin-top: 28px; }
+  .answer-breakdown h3 { color: var(--navy); font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; }
+  .ans-item { border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; font-size: 0.88rem; line-height: 1.6; }
+  .ans-correct { background: #e6ffed; border-left: 4px solid #00aa44; }
+  .ans-wrong { background: #ffe6e2; border-left: 4px solid #cc2200; }
+  .ans-item .ans-q { font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .ans-item .ans-yours { color: #666; }
+  .ans-item .ans-right { color: #005522; font-weight: 600; }
+  .action-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 28px; }
+  .locked-box { background: rgba(255,255,255,0.95); border-radius: 20px; padding: 50px; text-align: center; max-width: 500px; margin: 60px auto; box-shadow: var(--shadow); }
+  .locked-box h2 { color: #cc2200; font-size: 1.6rem; margin-bottom: 16px; }
+  .locked-box p { color: #444; line-height: 1.7; }
+  .cheat-overlay { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(204,0,0,0.97); color: white; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 40px; }
+  .cheat-overlay.show { display: flex; }
+  .cheat-overlay h1 { font-size: 3rem; margin-bottom: 16px; animation: pulse 0.4s infinite; }
+  .cheat-overlay p { font-size: 1.2rem; max-width: 500px; }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+  .site-footer { text-align: center; padding: 20px; color: rgba(255,255,255,0.45); font-size: 0.78rem; letter-spacing: 2px; }
+  @media print {
+    body { background: white !important; }
+    .site-header, .timer-bar, .kente-border, .action-btns, .site-footer,
+    #screen-home, #screen-landing, #screen-register, #screen-token-login, #screen-instructions, #screen-exam,
+    .popup-overlay, .cheat-overlay { display: none !important; }
+    #screen-results { display: block !important; padding: 0 !important; }
+    .result-card { box-shadow: none !important; border: 1px solid #ccc; }
+    .screen { max-width: 100% !important; }
+    .btn { display: none !important; }
+    .action-btns { display: none !important; }
+  }
+  @media (max-width: 600px) {
+    .home-title { font-size: 1.5rem; }
+    .landing-title { font-size: 1.4rem; }
+    .form-card { padding: 24px 18px; }
+    .q-body { padding: 20px 16px; }
+    .action-btns { flex-direction: column; }
+    .btn { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="kente-border"></div>
+
+<header class="site-header">
+  <div class="logo-area">
+    <div class="upsa-logo">🎓<br>UPSA</div>
+    <div class="header-text">
+      <h1>BGEC113 – Environmental Management</h1>
+      <p>University of Professional Studies, Accra &nbsp;|&nbsp; First Semester 2025/2026</p>
+    </div>
+  </div>
+  <div class="hangout-logo">
+    <div class="h-icon">📚</div>
+    <div class="h-name">HANGOUT</div>
+    <div class="h-name">PUBLICATIONS</div>
+  </div>
+</header>
+
+<!-- HOME SCREEN -->
+<div id="screen-home" class="screen active">
+  <div style="text-align:center; margin-bottom:30px;">
+    <div class="home-title">BGEC113 Examination Hub</div>
+    <div class="home-sub">Select a week's examination to begin &nbsp;·&nbsp; HangOut Publications &nbsp;·&nbsp; UPSA</div>
+    <div class="adinkra-divider">✦ ☥ ✦</div>
+  </div>
+  <div class="week-cards">
+    <div class="week-card" onclick="selectWeek(3)">
+      <span class="wc-status status-open">OPEN</span>
+      <div class="wc-num">3</div>
+      <div class="wc-label">Week 3 Exam</div>
+      <div class="wc-title">Environmental Management &amp; Its Evolution</div>
+      <div class="wc-meta">
+        <span class="wc-tag">❓ 50 Questions</span>
+        <span class="wc-tag">⏱️ 50 mins</span>
+        <span class="wc-tag">🔑 Token</span>
+      </div>
+    </div>
+    <div class="week-card" onclick="selectWeek(4)">
+      <span class="wc-status status-open">OPEN</span>
+      <div class="wc-num">4</div>
+      <div class="wc-label">Week 4 Exam</div>
+      <div class="wc-title">Environmental Economics &amp; Market Failures</div>
+      <div class="wc-meta">
+        <span class="wc-tag">❓ 50 Questions</span>
+        <span class="wc-tag">⏱️ 50 mins</span>
+        <span class="wc-tag">🔑 Token</span>
+      </div>
+    </div>
+    <div class="week-card" onclick="selectWeek(5)">
+      <span class="wc-status status-open">OPEN</span>
+      <div class="wc-num">5</div>
+      <div class="wc-label">Week 5 Exam</div>
+      <div class="wc-title">CPR Management, Economic Instruments &amp; Material Balance</div>
+      <div class="wc-meta">
+        <span class="wc-tag">❓ 50 Questions</span>
+        <span class="wc-tag">⏱️ 50 mins</span>
+        <span class="wc-tag">🔑 Token</span>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center; color:#aac4ff; font-size:0.82rem; margin-top:10px;">
+    🛡️ 12 Anti-Cheat Security Measures Active &nbsp;|&nbsp; Each exam requires a unique token &nbsp;|&nbsp; 3 attempts per exam
+  </div>
+</div>
+
+<!-- LANDING -->
+<div id="screen-landing" class="screen">
+  <div class="week-badge" id="landing-badge">Week X Examination</div>
+  <div class="landing-title" id="landing-title">BGEC113</div>
+  <div class="landing-sub" id="landing-sub">BGEC113 · Mid-Semester Assessment · UPSA</div>
+  <div class="info-grid">
+    <div class="info-card"><div class="ic-icon">❓</div><div class="ic-val">50</div><div class="ic-lbl">Questions (MCQ)</div></div>
+    <div class="info-card"><div class="ic-icon">⏱️</div><div class="ic-val">50 mins</div><div class="ic-lbl">Time Allowed</div></div>
+    <div class="info-card"><div class="ic-icon">🔑</div><div class="ic-val">3</div><div class="ic-lbl">Max Attempts</div></div>
+    <div class="info-card"><div class="ic-icon">🔒</div><div class="ic-val">Token</div><div class="ic-lbl">Required to Enter</div></div>
+  </div>
+  <div class="adinkra-divider">✦ ☥ ✦</div>
+  <button class="btn btn-primary" onclick="goTo('register')">Generate My Token &amp; Register →</button>
+  <button class="btn btn-secondary" onclick="goTo('token-login')">I Have My Token →</button>
+  <br><br>
+  <button class="btn btn-back" onclick="goTo('home')" style="margin-top:8px">← Back to Week Selection</button>
+  <div style="margin-top:20px; color:#aac4ff; font-size:0.8rem;">
+    📌 One question at a time &nbsp;|&nbsp; No going back &nbsp;|&nbsp; Auto-submit at 0:00<br>
+    🛡️ 12 Anti-Cheat Security Measures Active
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div id="screen-register" class="screen">
+  <div class="form-card">
+    <h2>📝 Student Registration</h2>
+    <p>Fill in your details to generate your unique exam token. Copy and save it — you'll need it to enter the exam.</p>
+    <div class="form-group">
+      <label>Full Name *</label>
+      <input type="text" id="reg-name" placeholder="e.g. Kofi Asante Mensah" />
+    </div>
+    <div class="form-group">
+      <label>Student Index Number *</label>
+      <input type="text" id="reg-index" placeholder="e.g. UPSAxxx/xx/xxxx" />
+    </div>
+    <div class="form-group">
+      <label>Programme *</label>
+      <select id="reg-prog">
+        <option value="">-- Select Programme --</option>
+        <option>BA Business Administration</option>
+        <option>BSc Accounting</option>
+        <option>BSc Banking and Finance</option>
+        <option>BSc Marketing</option>
+        <option>BSc Human Resource Management</option>
+        <option>BSc Public Administration</option>
+        <option>BSc Information Technology</option>
+        <option>BSc Computer Science</option>
+        <option>BSc Environmental Management</option>
+        <option>BSc Real Estate Management</option>
+        <option>BSc Logistics and Supply Chain</option>
+        <option>LLB Law</option>
+        <option>BSc Economics</option>
+        <option>BSc Statistics</option>
+        <option>MBA</option>
+        <option>MPhil</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="generateToken()">🔑 Generate My Token</button>
+    <div id="token-display" style="display:none">
+      <div class="adinkra-divider">✦ YOUR TOKEN ✦</div>
+      <div class="token-box" onclick="copyToken()" id="token-val">
+        <span id="token-text">------</span>
+        <span style="font-size:1.2rem">📋</span>
+      </div>
+      <small style="color:#888; text-align:center; display:block; margin-bottom:14px;">Click token to copy · Token valid for 3 attempts · Keep it safe</small>
+      <button class="btn btn-primary" style="width:100%" onclick="proceedWithToken()">Enter Examination Hub →</button>
+    </div>
+    <div id="reg-error" style="color:#cc2200; font-size:0.85rem; margin-top:10px; display:none"></div>
+    <p style="margin-top:20px; text-align:center"><a href="#" onclick="goTo('landing')" style="color:var(--navy); font-size:0.85rem">← Back</a></p>
+  </div>
+</div>
+
+<!-- TOKEN LOGIN -->
+<div id="screen-token-login" class="screen">
+  <div class="form-card">
+    <h2>🔑 Token Login</h2>
+    <p>Enter your previously generated token to access the examination hub.</p>
+    <div class="form-group">
+      <label>Your Token</label>
+      <div class="token-input-area">
+        <input type="text" id="login-token" placeholder="XXXXXX" maxlength="8" style="text-transform:uppercase;font-size:1.3rem;letter-spacing:4px;font-weight:800" />
+        <button class="btn btn-primary" onclick="loginWithToken()">Enter</button>
+      </div>
+    </div>
+    <div id="token-error" style="color:#cc2200; font-size:0.85rem; margin-top:10px; display:none"></div>
+    <p style="margin-top:20px; text-align:center"><a href="#" onclick="goTo('landing')" style="color:var(--navy); font-size:0.85rem">← Back</a></p>
+  </div>
+</div>
+
+<!-- EXAM INSTRUCTIONS -->
+<div id="screen-instructions" class="screen">
+  <div class="form-card" style="max-width:620px">
+    <h2>📋 Examination Instructions</h2>
+    <div style="margin: 16px 0; padding: 14px; background:#fff8e6; border-radius:10px; border-left:4px solid var(--gold)">
+      <p style="margin:0; color:#555; font-size:0.88rem; line-height:1.8">
+        <strong>1.</strong> This exam contains <strong>50 MCQ questions</strong> — one at a time.<br>
+        <strong>2.</strong> You have <strong>50 minutes</strong>. The exam auto-submits at zero.<br>
+        <strong>3.</strong> Once you move to the next question, you <strong>cannot go back</strong>.<br>
+        <strong>4.</strong> Do not switch tabs or minimize the window — <strong>alarm will sound</strong>.<br>
+        <strong>5.</strong> Do not use right-click, keyboard shortcuts, or developer tools.<br>
+        <strong>6.</strong> This is attempt <strong id="attempt-num">1</strong> of 3. Use them wisely.<br>
+        <strong>7.</strong> Results will be shown immediately after submission.<br>
+        <strong>8.</strong> You can print and share results via WhatsApp after the exam.
+      </p>
+    </div>
+    <div id="student-info-preview" style="background:#f0f4ff; border-radius:10px; padding:14px; font-size:0.9rem; color:var(--navy); margin-bottom:20px"></div>
+    <button class="btn btn-primary" style="width:100%" onclick="startExam()">🚀 Begin Examination</button>
+  </div>
+</div>
+
+<!-- EXAM -->
+<div id="screen-exam" class="screen">
+  <div class="timer-bar">
+    <div>
+      <div class="timer-label">TIME REMAINING</div>
+      <div class="timer-display" id="timer-display">50:00</div>
+    </div>
+    <div class="progress-wrap"><div class="progress-fill" id="progress-fill" style="width:100%"></div></div>
+    <div style="text-align:right">
+      <div class="timer-label">QUESTION</div>
+      <div style="color:var(--gold2); font-weight:800" id="q-counter">1 / 50</div>
+    </div>
+  </div>
+  <div class="q-container">
+    <div class="q-header">
+      <div class="q-num" id="q-num-label">Question 1 of 50</div>
+      <div class="q-score-live" id="q-answered-label">0 answered</div>
+    </div>
+    <div class="q-body">
+      <div class="q-text" id="q-text"></div>
+      <ul class="options" id="q-options"></ul>
+      <div class="q-nav">
+        <button class="btn btn-primary" id="btn-next" onclick="nextQuestion()">Next Question →</button>
+        <button class="btn btn-danger" id="btn-submit" style="display:none" onclick="submitExam()">Submit Exam ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="screen-results" class="screen">
+  <div class="result-card" id="result-card">
+    <div style="text-align:center; margin-bottom:10px">
+      <div class="week-badge">Examination Results</div>
+      <div style="font-size:1.1rem; color:var(--navy); font-weight:800" id="result-title">BGEC113</div>
+    </div>
+    <div id="student-result-info" style="background:#f0f4ff; border-radius:10px; padding:14px; font-size:0.9rem; color:var(--navy); margin: 16px 0"></div>
+    <div class="score-display">
+      <div class="grade-badge grade-A" id="grade-badge">A</div>
+      <div class="score-num"><span id="score-got">0</span> / 50</div>
+      <div class="score-sub" id="score-percent"></div>
+      <div class="score-sub" id="time-used-display"></div>
+    </div>
+    <div class="motivation-box" id="motivation-box">
+      <p id="motivation-text"></p>
+      <small>— HangOut Publications</small>
+    </div>
+    <div class="answer-breakdown">
+      <h3>📋 Full Answer Breakdown (Marking Scheme)</h3>
+      <div id="answers-list"></div>
+    </div>
+    <div class="action-btns">
+      <button class="btn btn-primary" onclick="window.print()">🖨️ Print Results</button>
+      <button class="btn btn-whatsapp" onclick="shareWhatsApp()">📱 Share via WhatsApp</button>
+      <button class="btn btn-secondary" onclick="goTo('home')">🏠 Return to Hub</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOCKED -->
+<div id="screen-locked" class="screen">
+  <div class="locked-box">
+    <div style="font-size:4rem; margin-bottom:16px">🔒</div>
+    <h2>Exam Access Locked</h2>
+    <p>You have used all <strong>3 attempts</strong> for this examination.<br><br>
+    To request a new access link, please contact:<br><br>
+    <strong>📲 HangOut Publications</strong><br>
+    <a href="https://wa.me/233000000000" style="color:var(--navy)">WhatsApp: +233 XXX XXX XXXX</a><br><br>
+    <em>Do not attempt to clear your browser data to bypass this lock.</em>
+    <br><br>
+    <button class="btn btn-back" onclick="goTo('home')" style="margin-top:12px">← Back to Hub</button>
+    </p>
+  </div>
+</div>
+
+<!-- MID-EXAM POPUP -->
+<div class="popup-overlay" id="mid-popup">
+  <div class="popup-card">
+    <h2>⚡ Time to Focus! ⚡</h2>
+    <div class="popup-lang" id="popup-lang"></div>
+    <div class="popup-quote" id="popup-quote"></div>
+    <button class="btn btn-primary" onclick="closePopup()">💪 Got It! Continue</button>
+  </div>
+</div>
+
+<!-- CHEAT ALERT -->
+<div class="cheat-overlay" id="cheat-overlay">
+  <div style="font-size:5rem">⚠️</div>
+  <h1>TAB SWITCH DETECTED!</h1>
+  <p>Cheating is not permitted. This incident has been logged.<br>Return to your examination immediately.</p>
+  <br>
+  <button class="btn" style="background:white;color:#cc2200;font-size:1.1rem" onclick="dismissCheat()">Return to Exam</button>
+</div>
+
+<div class="site-footer">HangOut Publications &nbsp;·&nbsp; UPSA &nbsp;|&nbsp; BGEC113 Environmental Management &nbsp;·&nbsp; © 2025/2026</div>
+
+<script>
+// ============================================================
+//  ALL WEEK QUESTION BANKS
+// ============================================================
+const QUESTION_BANKS = {
+  3: [
+    {q:"According to Bartol and Martin (1998), management is defined as:",o:["A process of achieving organizational goals by planning, organizing, leading and controlling","A system of exploiting natural resources for economic growth","A framework for maximizing profits in corporate organizations","A process of directing government policies on environmental issues"],a:0},
+    {q:"Which of the following resources does management coordinate, according to the definition?",o:["Men, machines, materials and money","Land, water, air and minerals","Technology, patents, trademarks and capital","People, policies, profits and procedures"],a:0},
+    {q:"Which statement is TRUE about the definition of Environmental Management (EM)?",o:["There is one universally accepted definition of EM","EM only applies to government organizations","EM has no universally accepted definition","EM is only concerned with pollution control"],a:2},
+    {q:"According to one definition, Environmental Management involves managing the environmental aspects of:",o:["Only government agencies","Only multinational corporations","Organizations (Sharratt, 1995)","Only agricultural firms"],a:2},
+    {q:"The EM Framework involves how many overlapping steps?",o:["Three","Four","Five","Six"],a:2},
+    {q:"Which of the following is NOT a step in the EM Framework?",o:["Recognize and prioritize problems","Develop objectives","Maximize shareholder returns","Evaluate effectiveness and efficiency"],a:2},
+    {q:"'Appropriate Environmental Management' is best described as:",o:["Maximizing resource extraction for economic growth","Efficient resource use for human development while conserving ecosystems","Using all available resources as fast as possible","Leaving all resources completely untouched"],a:1},
+    {q:"Which of the following is an example of 'Inappropriate Environmental Management'?",o:["Sustainable harvesting of forest resources","Efficient water use in agriculture","Misuse through over-utilization of ecological resources","Installing pollution control technologies"],a:2},
+    {q:"The first major global environmental conference was held in:",o:["Rio de Janeiro, 1992","Stockholm, 1972","Johannesburg, 2002","Nairobi, 1975"],a:1},
+    {q:"The 1972 Stockholm Conference is officially known as the:",o:["UN Conference on Sustainable Development","World Environment Summit","UN Conference on the Human Environment","World Climate Change Conference"],a:2},
+    {q:"The Stockholm Conference established that environment and development are:",o:["Competing priorities","Two sides of the same coin","Completely unrelated issues","Only relevant to developed nations"],a:1},
+    {q:"How many countries signed the Stockholm Declaration?",o:["52","62","72","82"],a:2},
+    {q:"One major institutional outcome of the 1972 Stockholm Conference was:",o:["Establishment of the World Trade Organization","Creation of Environmental Ministries worldwide and UNEP","Formation of the G7 group of nations","Signing of the Paris Agreement"],a:1},
+    {q:"UNEP was formally established in:",o:["1972","1973","1975","1980"],a:2},
+    {q:"The World Commission on Environment and Development (WCED) produced the Brundtland Report in:",o:["1972","1980","1987","1992"],a:2},
+    {q:"The Brundtland Report is credited with popularizing which concept?",o:["Privatization","Sustainable Development","Market Liberalization","Environmental Taxation"],a:1},
+    {q:"The 1992 Rio Earth Summit operationalized Sustainable Development through:",o:["Kyoto Protocol","Montreal Protocol","Agenda 21","The Paris Agreement"],a:2},
+    {q:"How many chapters does Agenda 21 contain?",o:["21","50","100","115"],a:3},
+    {q:"Agenda 21 places heavy focus on:",o:["Military development","Industrial growth","Space exploration","Poverty reduction"],a:3},
+    {q:"Rio+10 (the 2002 Earth Summit) was held in:",o:["Rio de Janeiro, Brazil","Stockholm, Sweden","Johannesburg, South Africa","Nairobi, Kenya"],a:2},
+    {q:"Rio+20 (2012) was the UN Conference on:",o:["Human Environment","Biological Diversity","Sustainable Development","Climate Change"],a:2},
+    {q:"World Environment Day is observed every year on:",o:["22nd April","5th June","16th September","5th December"],a:1},
+    {q:"Ghana's Environmental Protection Council (EPC) was established in:",o:["1970","1972","1974","1980"],a:2},
+    {q:"The legal instrument establishing Ghana's EPC was:",o:["EPA Act 490","EPC Decree 100","NRC Decree 239","PNDC Law 58"],a:2},
+    {q:"Ghana's Environmental Protection Agency (EPA) was established under:",o:["EPA Act 490 in 1994","NRC Decree 239 in 1974","Environmental Act 200 in 1990","PNDC Law 58 in 1980"],a:0},
+    {q:"A key lesson from the evolution of environmental management is that:",o:["Environmental problems stay local and have no global ramifications","Environmental problems have global ramifications even if locally caused","Developing countries have always led environmental policy","Environment and economics are completely separate issues"],a:1},
+    {q:"Which of the following was a major environmental concern raised in the 1960s–70s?",o:["Space exploration","Nuclear energy expansion","Wildlife management and water/air pollution","Artificial intelligence impact"],a:2},
+    {q:"Future trends in environmental management suggest that:",o:["Only developing countries are embracing strategic EM","Environment has no relevance to business competitiveness","Leading companies are using environmental issues to add business value","Manufacturing is independent of environmental considerations"],a:2},
+    {q:"The Kyoto Protocol is directly related to:",o:["Management of fisheries","Biodiversity conservation","Forest conservation","Prevention of greenhouse gas emissions"],a:3},
+    {q:"Stakeholder influence in environmental management helps industries to:",o:["Increase pollution levels","Avoid all environmental regulations","Gain competitive advantage over competitors","Reduce their workforce"],a:2},
+    {q:"One goal of Environmental Management is to:",o:["Maximize resource extraction for profit","Sustain and improve resources for future generations","Reduce all forms of industrial activity","Oppose economic development"],a:1},
+    {q:"Environmental Management is described as important to human health because:",o:["It has no direct link to human health","Only wealthy countries benefit from it","Mismanagement of the environment leads to deterioration in human health","It only affects industrial workers"],a:2},
+    {q:"Which of the following is NOT a reason why managing the environment is important?",o:["Efficiency leads to minimization of production costs","It helps meet future needs due to population growth","It prevents all forms of natural disasters","Sound management ensures peace in society"],a:2},
+    {q:"Which of the following was a stated goal of Environmental Management?",o:["To warn of threats and identify new technologies","To maximize corporate profits above all else","To eliminate all human use of natural resources","To create military advantages"],a:0},
+    {q:"The four functions in the management process are:",o:["Producing, selling, distributing, recycling","Planning, organizing, leading and controlling","Surveying, mapping, monitoring, reporting","Funding, staffing, promoting, evaluating"],a:1},
+    {q:"'Developing countries still tend to treat environmental management as' which type of function?",o:["Strategic","Operational","Functional (not strategic)","Technical"],a:2},
+    {q:"The evolution of environmental consciousness shows that environmental problems have:",o:["Both socio-economic implications and require international cooperation","Only economic implications","No need for international cooperation","Remained unchanged since the 1960s"],a:0},
+    {q:"According to the course, population growth creates pressure on resources because:",o:["People generally use fewer resources when populations grow","Population was doubling approximately every 20 years","There are always enough resources for any population size","Governments always prevent resource depletion"],a:1},
+    {q:"Environmental management helps in disaster management because:",o:["It can prevent all natural disasters","Climate and weather patterns are affected by poor environmental practices","Disasters have no link to human activities","Environmental laws stop all disasters"],a:1},
+    {q:"The three core characteristics of an 'appropriate' EM approach are:",o:["Rapid extraction, distribution, and marketing","Efficient use, conservation, and ecosystem sustaining","Taxation, regulation, and prohibition","Research, development, and commercialization"],a:1},
+    {q:"UNEP stands for:",o:["United Nations Environmental Plans","United Nations Environment Programme","Universal Natural Environment Protocol","United Nations Economic Programme"],a:1},
+    {q:"WCED stands for:",o:["World Centre for Environmental Design","World Commission on Environment and Development","World Committee on Environmental Disasters","World Council for Ecological Development"],a:1},
+    {q:"The EM step 'Evaluate effectiveness and efficiency' is:",o:["The first step in the framework","The second step","The middle step","The final step"],a:3},
+    {q:"Which of the following best describes the goal of EM to 'identify new technologies'?",o:["Developing military technologies","Identifying new technologies and policies that can improve environmental management","Creating technologies to exploit resources faster","Banning all new industrial technologies"],a:1},
+    {q:"Environmental management became an international concern primarily because of:",o:["Competition between developed countries","Evidence that local environmental problems have global consequences","Purely economic reasons","Military conflicts over resources"],a:1},
+    {q:"The Rio+20 conference in 2012 was held in:",o:["Johannesburg, South Africa","Stockholm, Sweden","Rio de Janeiro, Brazil","Geneva, Switzerland"],a:2},
+    {q:"An important reason businesses take interest in environmental issues is:",o:["To reduce their tax obligations entirely","Because environmental issues can add value and competitive advantage","To avoid all government regulation","Because shareholders demand maximum resource use"],a:1},
+    {q:"Ghana's EPA (1994) was established primarily to:",o:["Regulate industry pricing","Implement government environmental policy and regulate the environment","Manage Ghana's foreign debt","Control agricultural output"],a:1},
+    {q:"Which global organization focuses specifically on coordinating international environmental activities?",o:["World Trade Organization (WTO)","International Monetary Fund (IMF)","United Nations Environment Programme (UNEP)","World Health Organization (WHO)"],a:2},
+    {q:"Before the 1960s, the general attitude toward environmental management was:",o:["Active conservation and protection","Minimal concern for environmental issues","Strong government environmental regulation","International cooperation on pollution"],a:1},
+    {q:"Which of the following correctly pairs an EM goal with its description?",o:["Sustain resources — maximize extraction speed","Warn of threats — identify emerging environmental problems early","Prevent all disasters — stop all industrial activity","Improve quality of life — increase pollution to boost output"],a:1}
+  ],
+  4: [
+    {q:"Economics is best defined as the study of:",o:["How individuals and groups make decisions about using valuable resources","How governments control international trade","How companies maximize profits","How scientists study the natural environment"],a:0},
+    {q:"Environmental Economics focuses on:",o:["How to maximize resource extraction","The relationship between the economy and the natural environment","How governments collect taxes","Purely monetary policies of central banks"],a:1},
+    {q:"Which of the following is NOT a branch of economics as mentioned in the slides?",o:["Microeconomics","Macroeconomics","Environmental Economics","Forensic Economics"],a:3},
+    {q:"Microeconomics is primarily concerned with:",o:["The economic performance of whole economies","Individual and small group decision-making behavior","International trade agreements","National monetary policy"],a:1},
+    {q:"Macroeconomics studies:",o:["Individual firm behavior","Small group decisions","The economic performance of entire economies","Environmental policy instruments"],a:2},
+    {q:"Environmental Economics applies economic principles to:",o:["Maximize resource exploitation","Study of environmental resource management","Create new financial markets","Remove all environmental regulations"],a:1},
+    {q:"Environmental Economics is concerned with WHY people make decisions with:",o:["Only financial consequences","Environmental consequences","Only political implications","Only social implications"],a:1},
+    {q:"Which of the following resources can markets allocate according to environmental economics?",o:["Patents and trademarks","Land, water, and clean air","Military equipment","Government services"],a:1},
+    {q:"A market is defined as a system where buyers and sellers exchange goods/services and:",o:["Government sets all prices","Allocate resources and determine price/quantity based on supply and demand","International bodies control allocation","Prices never change"],a:1},
+    {q:"Which is NOT an ideal market characteristic mentioned in the slides?",o:["Competitiveness","Perfect information","High profit margins","Well-defined property rights"],a:2},
+    {q:"'Competitiveness' as an ideal market feature means:",o:["Only one seller dominates","Many buyers and sellers exist in the market","Government controls all transactions","Prices are fixed by law"],a:1},
+    {q:"'Perfect information' in an ideal market means:",o:["Only sellers have information","All parties know the full costs and benefits","Government controls information","Markets use artificial intelligence"],a:1},
+    {q:"'Well-defined property rights' means:",o:["All resources are owned by government","Ownership of goods and resources is clearly defined","Property can be taken freely","All resources are communally owned"],a:1},
+    {q:"'No externalities' as an ideal market characteristic means:",o:["External agencies control the market","Costs and benefits are borne only by direct transaction participants","Government pays all external costs","Only positive externalities exist"],a:1},
+    {q:"Market failures occur when:",o:["Markets generate excessive profits","The market does not allocate resources efficiently, causing negative environmental outcomes","Government over-regulates markets","Prices are too high for consumers"],a:1},
+    {q:"Which of the following is NOT a key type of market failure causing environmental problems?",o:["Externalities","Public goods","Tragedy of the commons","High business profit margins"],a:3},
+    {q:"Externalities are defined as:",o:["Government regulations on businesses","Costs or benefits affecting third parties not involved in a market transaction","International trade barriers","National environmental laws"],a:1},
+    {q:"A negative externality occurs when:",o:["An activity provides benefits to third parties","An activity negatively affects or imposes costs on third parties without compensation","Property rights are clearly defined","Markets are perfectly competitive"],a:1},
+    {q:"Which of the following is an example of a NEGATIVE externality?",o:["Urban green spaces and parks","Environmental conservation programs","Air pollution from industrial activities","Community afforestation programs"],a:2},
+    {q:"A positive externality occurs when:",o:["An activity harms third parties","An activity provides benefits to third parties without compensation to the producer","Government subsidizes businesses","Markets are completely free"],a:1},
+    {q:"Which is an example of a POSITIVE externality mentioned in the slides?",o:["Water pollution from agriculture","Air pollution from factories","Environmental conservation and afforestation","Resource depletion from mining"],a:2},
+    {q:"Public goods are characterized by being:",o:["Excludable and rivalrous","Non-excludable and non-rivalrous","Excludable and non-rivalrous","Non-excludable and rivalrous"],a:1},
+    {q:"'Non-excludable' means:",o:["Easy to prevent non-payers from using","Impossible or very difficult to prevent individuals from using without paying","Exclusively privately owned","Priced very high in markets"],a:1},
+    {q:"'Non-rivalrous' means:",o:["One person's use reduces availability for others","One person's use does NOT reduce availability for others","The good is exclusively owned","The good is very scarce"],a:1},
+    {q:"Which is an example of a public good from the slides?",o:["Private farmland","Clean air","Personal vehicle","Privately owned forest"],a:1},
+    {q:"'Free-ridership' in public goods refers to:",o:["People paying more than necessary","Benefiting from a public good without contributing to its cost","Government providing free goods","Markets providing goods at zero cost"],a:1},
+    {q:"Public goods are often 'under-provided' because:",o:["Excessive government regulation","Little motivation to pay for what one can enjoy for free","Companies produce too many","Demand is always very low"],a:1},
+    {q:"'Underfunding' as a problem of public goods arises because:",o:["Governments lack budgets","Free-ridership means few willingly fund the good","Demand exceeds supply","International organizations take funding"],a:1},
+    {q:"Common Property Resources (CPR) are:",o:["Resources owned exclusively by government","Natural or man-made resources shared by a group and subject to rules","Resources with no ownership","Purely private resources"],a:1},
+    {q:"Common Property Resources are:",o:["Non-rivalrous and non-excludable","Rivalrous and non-excludable","Rivalrous and excludable","Non-rivalrous and excludable"],a:1},
+    {q:"The 'Tragedy of the Commons' describes:",o:["Government failure to manage resources","Individuals acting in self-interest overusing and depleting shared resources","Communities successfully managing common resources","Markets efficiently allocating public goods"],a:1},
+    {q:"Which is an example of a Common Property Resource mentioned in the slides?",o:["Private factory","Government treasury","Community forest","Individual farm"],a:2},
+    {q:"Overharvesting of a community forest is an example of:",o:["Efficient market allocation","Positive externality","Tragedy of the commons in forests","Perfect market information"],a:2},
+    {q:"Overgrazing of shared pastures leads to:",o:["Increased land fertility","Improved wildlife habitats","Soil erosion and land degradation","Better water retention"],a:2},
+    {q:"Overfishing of shared water bodies leads to:",o:["Increased fish population","Stock depletion and fishery collapse","Better water quality","Improved marine biodiversity"],a:1},
+    {q:"Unrestricted access to Common Property Resources typically leads to:",o:["Sustainable use and conservation","Efficient market allocation","Resource degradation and exhaustion","Improved resource quality"],a:2},
+    {q:"The key difference between a public good and a CPR is:",o:["Only public goods are shared","CPRs are rivalrous while public goods are non-rivalrous","Public goods are privately owned","CPRs are always government-owned"],a:1},
+    {q:"Environmental economics aims to balance economic activity with:",o:["Maximum extraction of resources","Environmental protection and ecosystem needs","Complete prohibition of industry","Unlimited economic growth"],a:1},
+    {q:"Which of the following would be considered a 'stable climate' in terms of good type?",o:["Private good","Club good","Common property resource","Public good"],a:3},
+    {q:"The free-rider problem causes public goods to be under-provided because:",o:["Supply is always limited","Individuals know they can benefit without paying","Prices are set too high","Government mismanages funding"],a:1},
+    {q:"Excessive groundwater extraction is an example of tragedy of the commons because:",o:["Water has no monetary value","Water is privately owned","Multiple users extract without regard for the shared stock","Governments always mismanage water"],a:2},
+    {q:"Air pollution as a negative externality means factory owners:",o:["Pay all costs of pollution","Do not fully bear the environmental and health costs imposed on others","Benefit all members of society","Always follow government regulations"],a:1},
+    {q:"Urban green spaces as a public good are:",o:["Easy to privatize and charge for","Non-excludable and provide benefits to all nearby residents","Only beneficial to wealthy neighborhoods","A form of negative externality"],a:1},
+    {q:"Which of the following is the BEST definition of environmental economics from the slides?",o:["The study of how to maximize resource profits","A branch of economics studying the relationship between economic activities and the natural environment","A study of government financial policies","A tool to promote unrestricted industrial growth"],a:1},
+    {q:"Market failure in the context of environmental management means:",o:["Markets always solve environmental problems","Markets can fail to account for environmental costs, leading to over-pollution and resource depletion","Governments must ban all markets","Only public ownership can protect the environment"],a:1},
+    {q:"Resource depletion can be a negative externality when:",o:["Companies pay full costs of extraction","The depletion imposes costs on future generations and communities without compensation","Markets efficiently price all resources","Government always prevents depletion"],a:1},
+    {q:"Which characteristic of CPRs makes them vulnerable to the tragedy of the commons?",o:["They are non-rivalrous","They are non-excludable","They are owned by governments","They are always abundant"],a:1},
+    {q:"Environmental Economics deals with how economic institutions can:",o:["Maximize resource extraction for short-term profits","Bring environmental impacts into balance with human desires and ecosystem needs","Eliminate all forms of taxation","Privatize all natural resources"],a:1},
+    {q:"A public green space (park) is a public good because:",o:["It is owned by a private company","No one can be excluded from using it and one person's use doesn't reduce it for others","It generates profit","It is only available to people who pay"],a:1},
+    {q:"Climate change is an example of a negative externality because:",o:["It only affects polluting countries","Its costs are borne by the entire global community including uninvolved parties","All countries benefit equally","Polluters pay the full cost"],a:1}
+  ],
+  5: [
+    {q:"The three main schools of thought for managing Common Property Resources (CPR) are:",o:["Privatization, Community-based Management, and Government Regulation","Taxation, Subsidies, and Penalties","Ownership, Sharing, and Abandonment","Pricing, Quotas, and Free Access"],a:0},
+    {q:"Privatization as a CPR management approach involves:",o:["Government taking ownership of all resources","Assigning ownership/property rights to individuals, groups, or organizations","Allowing unlimited free access to all users","Sharing resources equally among all citizens"],a:1},
+    {q:"'Universality' as a feature of private property means:",o:["All property is owned by the state","All entitlements are specified to the owner","Property is freely available to anyone","Resources are shared universally"],a:1},
+    {q:"'Exclusivity' as a feature of private property means:",o:["Only foreigners can own property","All benefits and costs accrue directly to the owner","Property is shared with the community","Benefits go to the government"],a:1},
+    {q:"'Transferability' as a feature of private property means:",o:["Property can be seized by government","Property rights can be transferred voluntarily between parties","Property transfers automatically on death","Only government can transfer property"],a:1},
+    {q:"'Enforceability' as a feature of private property means:",o:["Government can take property at will","Property rights are secured against involuntary seizure","Property has no legal protection","All resources are government-controlled"],a:1},
+    {q:"The KEY BENEFIT of privatization in managing CPRs is that:",o:["Resources become available to everyone for free","Private owners have powerful incentives to use resources efficiently since decline means personal loss","Government gains more revenue","Communities benefit equally from resources"],a:1},
+    {q:"Private ownership motivates conservation because:",o:["Owners fear government punishment","Decline in resource value means personal financial loss to the owner","Community norms demand conservation","International laws require it"],a:1},
+    {q:"Which is a DISADVANTAGE of privatization?",o:["Resources are always well-managed","Owners always prioritize sustainability","Exclusion of poor and marginalized groups","Privatization always leads to efficient resource use"],a:2},
+    {q:"Over-exploitation as a disadvantage of privatization occurs because:",o:["Government fails to regulate markets","The profit motive may encourage over-exploitation, especially where enforcement is poor","Communities resist privatization","Resources are inherently scarce"],a:1},
+    {q:"Community-based Management (CRM) involves:",o:["Government controlling all community decisions","Local communities collectively managing resources based on traditional knowledge and local rules","Private companies managing community resources","International organizations managing local resources"],a:1},
+    {q:"A feature of CRM is that communities have:",o:["Short-term interest in resource survival","A long-term stake in the survival of the resource","No interest in resource management","Only economic interest in resources"],a:1},
+    {q:"Which is a feature of effective Community-based Management?",o:["Strategies imposed from outside","Locally adapted strategies collectively enforced by community members","No monitoring of resource use","External conflict resolution only"],a:1},
+    {q:"Government Regulation as a CPR management tool includes:",o:["Transferring full ownership to private individuals","Issuing licenses/permits, establishing protected areas, and imposing fines","Providing subsidies to all resource users","Removing all rules on resource use"],a:1},
+    {q:"A 'closed season' policy in fishery management is an example of:",o:["Privatization","Community-based Management","Government Regulation using quota/permit systems","Economic instrument subsidies"],a:2},
+    {q:"Economic Instruments (EIs) are policy tools that achieve environmental objectives by:",o:["Using military force to enforce compliance","Influencing behavior through economic incentives and disincentives","Removing all regulations","Requiring international approval"],a:1},
+    {q:"EIs make harmful activities more costly while making:",o:["All activities equally priced","Environmentally friendly actions more rewarding","Profitable activities government-controlled","All businesses pay equal fees"],a:1},
+    {q:"Which is an example of an Environmental Subsidy?",o:["Fine for illegal dumping","Levy on plastic bags","Financial support for purchasing electric/hybrid vehicles","Tax on fossil fuel production"],a:2},
+    {q:"Tax Credits as an Economic Instrument work by:",o:["Increasing taxes on all businesses","Reducing tax obligations for environmentally beneficial behavior","Eliminating all taxes","Punishing non-compliance with fines"],a:1},
+    {q:"Levies as an Economic Instrument are:",o:["Voluntary contributions to environmental funds","Mandatory charges on harmful goods or activities to discourage them or fund environmental projects","Rewards for good environmental practice","Government grants for green businesses"],a:1},
+    {q:"The UK's landfill levy introduced in the early 1990s was designed to:",o:["Encourage more landfill use","Discourage waste disposal in landfills by making it financially costly","Subsidize waste management companies","Promote recycling by paying households"],a:1},
+    {q:"Quota Systems (Cap-and-Trade) work by:",o:["Banning all pollution","Government setting a pollution cap and allocating tradable permits; firms with less pollution sell excess","Taxing all industrial output","Requiring government approval for every activity"],a:1},
+    {q:"In a cap-and-trade system, firms that pollute LESS than their allocation can:",o:["Pay fines for unused permits","Sell their excess permits to firms that pollute more","Increase their pollution to use permits","Keep permits secret"],a:1},
+    {q:"The key advantage of cap-and-trade over direct regulation is:",o:["It is always cheaper for government","Pollution reduction occurs at lowest overall cost through market mechanisms","It eliminates all pollution","It requires no government involvement"],a:1},
+    {q:"Pricing Mechanisms as an EI work by:",o:["Removing all prices from environmental goods","Placing economic value on environmental assets so polluters pay equivalent to the value destroyed","Setting minimum wages","Eliminating market competition"],a:1},
+    {q:"The main CHALLENGE with Pricing Mechanisms is:",o:["Prices are easy to set","Many environmental assets are by nature priceless or intangible, making valuation difficult","They are never used in practice","Government always agrees on prices"],a:1},
+    {q:"'Effluent' refers to:",o:["Gas waste discharged to the atmosphere","Liquid waste discharged into rivers, lakes, seas or drainage","Solid waste in landfills","Noise pollution in communities"],a:1},
+    {q:"'Emissions' in the context of environmental fees refers to:",o:["Liquid waste in waterways","Solid waste in landfills","Gas waste discharged into the atmosphere","Chemical waste in soil"],a:2},
+    {q:"Effluent and Emissions Fees are charged based on:",o:["A flat rate regardless of pollution amount","The number of employees in the firm","The amount of waste discharged — more waste means more payment","The size of the company"],a:2},
+    {q:"The key principle of effluent and emissions fees is:",o:["All firms pay equal fees regardless of output","Polluter pays in proportion to the amount of waste released","Government pays all clean-up costs","Fees are voluntary"],a:1},
+    {q:"Performance Bonds work by having organizations:",o:["Pay fines after pollution events","Deposit money with regulatory authorities, refunded if compliant, forfeited if environment is polluted","Receive subsidies for good performance","Pay annual membership fees"],a:1},
+    {q:"Product Charges are placed on products that pollute:",o:["Only during final consumption","During manufacture, consumption, or disposal","Only during transportation","Only at the point of sale"],a:1},
+    {q:"Examples of products that attract Product Charges include:",o:["Medical equipment and food products","Fertilizers, pesticides, packaging, and batteries","Office furniture and electronics","Clothing and footwear"],a:1},
+    {q:"The Material Balance Model is based on:",o:["The 2nd Law of Thermodynamics","The 3rd Law of Thermodynamics","The 1st Law of Thermodynamics (conservation of matter/mass)","Newton's Law of Motion"],a:2},
+    {q:"In the Material Balance Model, the equation M = Rdp + Rdc means:",o:["Materials = Revenue from domestic production + Revenue from domestic consumption","Materials extracted from nature = Residuals from production + Residuals from consumption","Money = Rate of domestic production + Rate of domestic consumption","Mass = Rate of disposal + Rate of collection"],a:1},
+    {q:"Recycling and reuse in the context of the Material Balance Model:",o:["Eliminate all waste permanently","Delay but do not eliminate waste disposal since materials eventually return to environment","Remove the need for resource extraction","Completely solve environmental degradation"],a:1},
+    {q:"According to the Material Balance Model, to reduce waste going back to the environment, society must:",o:["Increase production output","Consider the quantity of materials taken from nature and reduce economic residuals","Eliminate all industry","Only increase recycling rates"],a:1},
+    {q:"The economy depends on the environment as the SOURCE of:",o:["Only aesthetic value","Raw materials and energy for production and consumption","Political power","Social stability"],a:1},
+    {q:"Production and consumption generate 'residuals' which:",o:["Are recycled perfectly","Disappear through technology","Return to the environment as waste","Are stored permanently"],a:2},
+    {q:"Global population growth since 1950 has:",o:["Remained constant","Halved","More than doubled, increasing pressure on natural resources","Had no environmental impact"],a:2},
+    {q:"Population growth decreases per capita:",o:["Money supply","Arable land available per person","Political power","Urban density"],a:1},
+    {q:"According to the slides, the richest 20% of the world's population receives:",o:["About 20% of global income","About 40% of global income","More than 80% of global income","About 60% of global income"],a:2},
+    {q:"The poorest 20% of the world's population receives:",o:["More than 50% of global income","About 30% of global income","Less than 20% of global income","Equal income to the richest 20%"],a:2},
+    {q:"Growing income inequality causes environmental damage because:",o:["Rich people always conserve resources","There is overconsumption at the top and poverty-driven environmental damage at the bottom","Poor countries have better environmental management","Inequality reduces economic growth"],a:1},
+    {q:"Which of the following is a DRIVING FORCE of global environmental decline mentioned in the slides?",o:["Decrease in global population","Reduction in industrial activity","Global economic growth leading to increased extraction of resources","Improved international cooperation"],a:2},
+    {q:"According to the economy-environment link, without environmental inputs:",o:["Production can continue using technology","Production and consumption cannot occur","Only services can be provided","The economy self-sustains"],a:1},
+    {q:"The goal of the Material Balance approach to policy is to:",o:["Maximize resource extraction","Exploit resources sustainably while minimizing residuals returned to the environment","Eliminate all industrial production","Privatize all natural resources"],a:1},
+    {q:"Government regulation of CPRs through 'Protected Areas' means:",o:["Giving private firms exclusive access","Establishing national parks and marine reserves where resource extraction is restricted","Allowing community harvest only","Creating economic zones for industry"],a:1},
+    {q:"Which Sandra Postel concept is referenced in the Week 5 slides?",o:["Maximum Sustainable Yield","Planetary Boundaries","Carrying Capacity: Earth's Bottom Line","The Green Economy"],a:2},
+    {q:"Fines and penalties as a government regulation tool for CPRs are designed to:",o:["Reward good environmental practice","Sanction illegal use or overexploitation of shared resources","Encourage more resource extraction","Replace all other management approaches"],a:1},
+    {q:"Which of the following BEST summarizes the relationship between the economy and the environment?",o:["The economy is completely independent of the environment","The environment depends on the economy for sustainability","The economic system is embedded within and dependent on the environment for resources, energy, and absorbing residuals","The environment and economy are unrelated systems"],a:2}
+  ]
+};
+
+const WEEK_TITLES = {
+  3: { badge: 'Week 3 Examination', title: 'Environmental Management & Its Evolution', sub: 'BGEC113 · Week 3 Assessment · UPSA', resultTitle: 'BGEC113 – Week 3: Environmental Management & Its Evolution' },
+  4: { badge: 'Week 4 Examination', title: 'Environmental Economics & Market Failures', sub: 'BGEC113 · Week 4 Assessment · UPSA', resultTitle: 'BGEC113 – Week 4: Environmental Economics & Market Failures' },
+  5: { badge: 'Week 5 Examination', title: 'CPR Management, Economic Instruments & Material Balance', sub: 'BGEC113 · Week 5 Assessment · UPSA', resultTitle: 'BGEC113 – Week 5: CPR Management, Economic Instruments & Material Balance' }
+};
+
+// ============================================================
+//  APP STATE
+// ============================================================
+let activeWeek = null;
+let QUESTIONS = [];
+let student = {};
+let currentQ = 0;
+let answers = [];
+let timerInterval = null;
+let secondsLeft = 50 * 60;
+let examStartTime = null;
+let alarmCtx = null;
+let cheatCount = 0;
+
+function getHubId() { return 'bgec113_w' + activeWeek; }
+
+// ============================================================
+//  SCREEN NAVIGATION
+// ============================================================
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const map = {
+    home: 'screen-home',
+    landing: 'screen-landing',
+    register: 'screen-register',
+    'token-login': 'screen-token-login',
+    instructions: 'screen-instructions',
+    exam: 'screen-exam',
+    results: 'screen-results',
+    locked: 'screen-locked'
+  };
+  document.getElementById(map[screen]).classList.add('active');
+}
+
+function selectWeek(week) {
+  activeWeek = week;
+  QUESTIONS = [...QUESTION_BANKS[week]];
+  const info = WEEK_TITLES[week];
+  document.getElementById('landing-badge').textContent = info.badge;
+  document.getElementById('landing-title').textContent = info.title;
+  document.getElementById('landing-sub').textContent = info.sub;
+  goTo('landing');
+}
+
+// ============================================================
+//  TOKEN SYSTEM
+// ============================================================
+function generateToken() {
+  const name = document.getElementById('reg-name').value.trim();
+  const index = document.getElementById('reg-index').value.trim();
+  const prog = document.getElementById('reg-prog').value;
+  const err = document.getElementById('reg-error');
+  if (!name || !index || !prog) { err.textContent = '⚠️ Please fill in all fields.'; err.style.display='block'; return; }
+  err.style.display = 'none';
+  const raw = name.toUpperCase().replace(/\s/g,'').slice(0,2) + index.replace(/\D/g,'').slice(-3);
+  const suffix = Math.floor(Math.random()*900+100);
+  const token = (raw + suffix).toUpperCase().slice(0,7);
+  student = { name, index, prog, token };
+  const stored = JSON.parse(localStorage.getItem(getHubId()+'_tokens') || '{}');
+  stored[token] = { name, index, prog, attempts: 0 };
+  localStorage.setItem(getHubId()+'_tokens', JSON.stringify(stored));
+  document.getElementById('token-text').textContent = token;
+  document.getElementById('token-display').style.display = 'block';
+}
+
+function copyToken() {
+  const t = document.getElementById('token-text').textContent;
+  navigator.clipboard.writeText(t).then(() => {
+    document.getElementById('token-val').style.background = '#006600';
+    setTimeout(() => document.getElementById('token-val').style.background = '#001a38', 1200);
+  });
+}
+
+function proceedWithToken() { checkAndProceed(student.token); }
+
+function loginWithToken() {
+  const t = document.getElementById('login-token').value.trim().toUpperCase();
+  checkAndProceed(t);
+}
+
+function checkAndProceed(token) {
+  const stored = JSON.parse(localStorage.getItem(getHubId()+'_tokens') || '{}');
+  const err = document.getElementById('token-error');
+  if (!stored[token]) {
+    if (err) { err.textContent = '❌ Token not found. Please register first.'; err.style.display='block'; }
+    return;
+  }
+  if (stored[token].attempts >= 3) { goTo('locked'); return; }
+  student = { ...stored[token], token };
+  const attNum = stored[token].attempts + 1;
+  document.getElementById('attempt-num').textContent = attNum;
+  document.getElementById('student-info-preview').innerHTML =
+    `<strong>Name:</strong> ${student.name} &nbsp;&nbsp; <strong>ID:</strong> ${student.index} &nbsp;&nbsp; <strong>Programme:</strong> ${student.prog}<br><strong>Attempt:</strong> ${attNum} of 3 &nbsp;&nbsp; <strong>Exam:</strong> ${WEEK_TITLES[activeWeek].badge}`;
+  goTo('instructions');
+}
+
+// ============================================================
+//  EXAM
+// ============================================================
+function startExam() {
+  const stored = JSON.parse(localStorage.getItem(getHubId()+'_tokens') || '{}');
+  stored[student.token].attempts++;
+  localStorage.setItem(getHubId()+'_tokens', JSON.stringify(stored));
+
+  answers = new Array(QUESTIONS.length).fill(null);
+  currentQ = 0;
+  secondsLeft = 50 * 60;
+  examStartTime = Date.now();
+  shuffleArray(QUESTIONS);
+  goTo('exam');
+  renderQuestion();
+  startTimer();
+  initSecurity();
+  schedulePopup();
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  document.getElementById('q-text').textContent = `${currentQ+1}. ${q.q}`;
+  document.getElementById('q-num-label').textContent = `Question ${currentQ+1} of ${QUESTIONS.length}`;
+  document.getElementById('q-answered-label').textContent = `${answers.filter(a=>a!==null).length} answered`;
+  document.getElementById('q-counter').textContent = `${currentQ+1} / ${QUESTIONS.length}`;
+  const ul = document.getElementById('q-options');
+  ul.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.o.forEach((opt, i) => {
+    const li = document.createElement('li');
+    li.className = 'option-item' + (answers[currentQ] === i ? ' selected' : '');
+    li.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    li.onclick = () => selectOption(i);
+    ul.appendChild(li);
+  });
+  const isLast = currentQ === QUESTIONS.length - 1;
+  document.getElementById('btn-next').style.display = isLast ? 'none' : 'inline-block';
+  document.getElementById('btn-submit').style.display = isLast ? 'inline-block' : 'none';
+}
+
+function selectOption(i) {
+  answers[currentQ] = i;
+  renderQuestion();
+}
+
+function nextQuestion() {
+  if (answers[currentQ] === null) {
+    if (!confirm('You have not selected an answer. Proceed without answering this question?')) return;
+  }
+  if (currentQ < QUESTIONS.length - 1) { currentQ++; renderQuestion(); }
+}
+
+function submitExam() {
+  if (!confirm('Are you sure you want to submit your examination?')) return;
+  clearInterval(timerInterval);
+  showResults();
+}
+
+// ============================================================
+//  TIMER
+// ============================================================
+function startTimer() {
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    secondsLeft--;
+    if (secondsLeft <= 0) { secondsLeft = 0; clearInterval(timerInterval); showResults(); return; }
+    updateTimerDisplay();
+    const pct = (secondsLeft / (50*60)) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    if (secondsLeft <= 300) document.getElementById('timer-display').classList.add('danger');
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(secondsLeft/60);
+  const s = secondsLeft % 60;
+  document.getElementById('timer-display').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+// ============================================================
+//  RESULTS
+// ============================================================
+function showResults() {
+  const elapsed = Math.round((Date.now() - examStartTime) / 1000);
+  const mins = Math.floor(elapsed/60), secs = elapsed%60;
+  let score = 0;
+  QUESTIONS.forEach((q,i) => { if (answers[i] === q.a) score++; });
+  const pct = Math.round((score/QUESTIONS.length)*100);
+  let grade = 'F';
+  if (pct>=80) grade='A'; else if (pct>=70) grade='B'; else if (pct>=60) grade='C'; else if (pct>=50) grade='D';
+
+  document.getElementById('result-title').textContent = WEEK_TITLES[activeWeek].resultTitle;
+  document.getElementById('score-got').textContent = score;
+  document.getElementById('score-percent').textContent = `${pct}% · Grade: ${grade}`;
+  document.getElementById('time-used-display').textContent = `Time used: ${mins}m ${secs}s`;
+
+  const gb = document.getElementById('grade-badge');
+  gb.textContent = grade;
+  gb.className = 'grade-badge grade-' + (grade === 'F' ? 'D' : grade);
+
+  document.getElementById('student-result-info').innerHTML =
+    `<strong>Name:</strong> ${student.name} &nbsp; <strong>ID:</strong> ${student.index} &nbsp; <strong>Programme:</strong> ${student.prog} &nbsp; <strong>Exam:</strong> ${WEEK_TITLES[activeWeek].badge}`;
+
+  const quotes = {
+    A: `"Woye nyansa pa! Wɔ Twi yɛ saa — 'Onipa a ɔwoa ne ho yie no, ɔde n'ankasa na ogye sor.' Keep soaring, champion! Excellence is not a destination but a way of life." (Akan Proverb)\n\n"Ɖe alɔ si ƒe — Keep the fire burning! Your hard work has paid off beautifully." (Ewe Proverb)`,
+    B: `"Ɔse yɛfrɛ wo STAR! Hwɛ — you are almost at the summit. 'Obra yɛ mmara a wɔde kasa.' Consistency is your ladder to A-grade glory." (Akan Proverb)\n\n"Atsu na de wò — Effort brought you here. Push a little more and the A is yours!" (Ewe)`,
+    C: `"Ahaban bi bɛsɛre — Some leaves will fall, but the tree stays! You passed, but the forest of knowledge awaits your return. Review your notes tonight!" (Akan)\n\n"Dɔwɔwɔ na hena ame — Hard work defines a person. Study harder next time!" (Ewe)`,
+    D: `"Wo kra ntena fam — Don't let your spirit lie down! Even the mightiest Odum tree was once a seed. Rise, review, and return stronger." (Akan)\n\n"Ɖo nu aɖeke ŋu — Hold onto something! Your comeback story starts today. Contact HangOut Publications for study materials." (Ewe)`,
+    F: `"Nyame nhyira wo — Let this be the turning point. No storm lasts forever. 'Obra yɛ nkɔmɔ' — Life gives us second chances. Use this result as fuel and come back stronger!" (Akan)\n\n"Contact HangOut Publications for support materials and study guides. You've got this!" (HangOut)`
+  };
+  document.getElementById('motivation-text').textContent = quotes[grade] || quotes['F'];
+
+  const list = document.getElementById('answers-list');
+  list.innerHTML = '';
+  QUESTIONS.forEach((q,i) => {
+    const userAns = answers[i];
+    const correct = q.a;
+    const isCorrect = userAns === correct;
+    const div = document.createElement('div');
+    div.className = 'ans-item ' + (isCorrect ? 'ans-correct' : 'ans-wrong');
+    div.innerHTML = `
+      <div class="ans-q">${i+1}. ${q.q}</div>
+      <div class="ans-yours">Your answer: ${userAns !== null ? q.o[userAns] : '⚠️ Not answered'} ${isCorrect ? '✅' : '❌'}</div>
+      ${!isCorrect ? `<div class="ans-right">✅ Correct answer: ${q.o[correct]}</div>` : ''}
+    `;
+    list.appendChild(div);
+  });
+
+  window._examResult = { score, pct, grade, mins, secs };
+  goTo('results');
+}
+
+function shareWhatsApp() {
+  const r = window._examResult;
+  const wrongList = QUESTIONS.map((q,i) => {
+    if (answers[i] !== q.a) return `Q${i+1}: ${q.q} (Your: ${answers[i]!==null?q.o[answers[i]]:'None'} | Correct: ${q.o[q.a]})`;
+    return null;
+  }).filter(Boolean).slice(0,10).join('\n');
+  const msg = `📚 *BGEC113 Exam Results - ${WEEK_TITLES[activeWeek].badge}*\n\n` +
+    `👤 *Name:* ${student.name}\n🆔 *ID:* ${student.index}\n📚 *Programme:* ${student.prog}\n` +
+    `⏱️ *Time Used:* ${r.mins}m ${r.secs}s\n📊 *Score:* ${r.score}/50 (${r.pct}%)\n🏆 *Grade:* ${r.grade}\n\n` +
+    `❌ *Wrong Questions (Top 10):*\n${wrongList}\n\n_Powered by HangOut Publications · UPSA_`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg));
+}
+
+// ============================================================
+//  SECURITY
+// ============================================================
+function initSecurity() {
+  cheatCount = 0;
+  document.addEventListener('visibilitychange', onVisChange);
+  window.addEventListener('blur', onBlur);
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', onKeyDown);
+  document.addEventListener('copy', e => e.preventDefault());
+  document.addEventListener('paste', e => e.preventDefault());
+  document.addEventListener('cut', e => e.preventDefault());
+  document.addEventListener('selectstart', e => e.preventDefault());
+  setInterval(detectDevTools, 2000);
+  window.addEventListener('resize', onResize);
+  document.addEventListener('mouseleave', onMouseLeave);
+}
+
+function onVisChange() {
+  if (document.hidden && document.getElementById('screen-exam').classList.contains('active')) triggerCheatAlarm('Tab Switch');
+}
+function onBlur() {
+  if (document.getElementById('screen-exam').classList.contains('active')) triggerCheatAlarm('Window Switch');
+}
+function onKeyDown(e) {
+  if (!document.getElementById('screen-exam').classList.contains('active')) return;
+  if (e.key === 'F12' || (e.ctrlKey && ['u','c','p','s','a','i','j'].includes(e.key.toLowerCase()))) {
+    e.preventDefault(); triggerCheatAlarm('Keyboard Shortcut');
+  }
+}
+function detectDevTools() {
+  if (!document.getElementById('screen-exam').classList.contains('active')) return;
+  if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) triggerCheatAlarm('DevTools');
+}
+function onResize() {
+  if (!document.getElementById('screen-exam').classList.contains('active')) return;
+  cheatCount++;
+  if (cheatCount > 3) triggerCheatAlarm('Window Resize');
+}
+function onMouseLeave() {
+  if (document.getElementById('screen-exam').classList.contains('active')) playBeep(220, 0.2, 0.1);
+}
+
+function triggerCheatAlarm(reason) {
+  playAlarm();
+  document.getElementById('cheat-overlay').classList.add('show');
+  const log = JSON.parse(localStorage.getItem(getHubId()+'_log') || '[]');
+  log.push({ student: student.name, index: student.index, reason, week: activeWeek, time: new Date().toISOString() });
+  localStorage.setItem(getHubId()+'_log', JSON.stringify(log));
+}
+function dismissCheat() { document.getElementById('cheat-overlay').classList.remove('show'); }
+
+function playAlarm() {
+  try {
+    if (!alarmCtx) alarmCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = alarmCtx;
+    const freqs = [880, 1200, 800, 1500, 600];
+    let t = ctx.currentTime;
+    freqs.forEach(freq => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = freq; osc.type = 'sawtooth';
+      gain.gain.setValueAtTime(0.4, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+      osc.start(t); osc.stop(t + 0.4);
+      t += 0.15;
+    });
+  } catch(e) {}
+}
+
+function playBeep(freq, vol, dur) {
+  try {
+    if (!alarmCtx) alarmCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = alarmCtx.createOscillator();
+    const gain = alarmCtx.createGain();
+    osc.connect(gain); gain.connect(alarmCtx.destination);
+    osc.frequency.value = freq; osc.type = 'sine';
+    gain.gain.value = vol;
+    osc.start(); osc.stop(alarmCtx.currentTime + dur);
+  } catch(e) {}
+}
+
+// ============================================================
+//  MID-EXAM POPUP
+// ============================================================
+const MID_QUOTES = [
+  { lang:'🇬🇭 Ewe', text:"Loo! Ɖe alɔ si ƒe na aƒe o — Don't drop your pen now, you're almost there! The ancestors are watching your hustle! 💪" },
+  { lang:'🇬🇭 Akan', text:"Wo hia atentene! Onipa a ɔba ɔsoro no ntena hɔ — Don't sit there staring at the paper like it owes you money! Write!" },
+  { lang:'🇬🇧 English', text:"Stop daydreaming about jollof rice and focus! Your CGPA won't improve by itself. Write something — ANYTHING! 📝" },
+  { lang:'🇬🇭 Akan', text:"Ɔbra nyɛ ho — Life is not easy! But this exam is easier than life. So why are you still struggling? Focus!" },
+  { lang:'🇬🇭 Ewe', text:"Xɔ ɖe nu! You didn't wake up at 5am to come here and fail. The WiFi back home is not worth this grade — FOCUS!" },
+];
+
+function schedulePopup() {
+  const times = [15*60, 30*60];
+  times.forEach(t => {
+    setTimeout(() => {
+      if (document.getElementById('screen-exam').classList.contains('active')) showPopup();
+    }, (50*60 - t) * 1000);
+  });
+}
+
+function showPopup() {
+  const q = MID_QUOTES[Math.floor(Math.random() * MID_QUOTES.length)];
+  document.getElementById('popup-lang').textContent = q.lang;
+  document.getElementById('popup-quote').textContent = q.text;
+  document.getElementById('mid-popup').classList.add('show');
+}
+function closePopup() { document.getElementById('mid-popup').classList.remove('show'); }
+</script>
+</body>
+</html>
