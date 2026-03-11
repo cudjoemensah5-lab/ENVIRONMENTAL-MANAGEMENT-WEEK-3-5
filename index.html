@@ -3,408 +3,772 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BGEC113 – Combined Exam Hub | HangOut Publications</title>
+<title>BGEC113 – Earth Examination Hub | HangOut Publications</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --navy: #002147;
-    --gold: #C9A84C;
-    --gold2: #F5D282;
-    --kente1: #CC0000;
-    --kente2: #009900;
-    --kente3: #FFD700;
-    --kente4: #000000;
-    --white: #FFFFFF;
-    --light: #f4f0e8;
-    --shadow: 0 8px 32px rgba(0,33,71,0.18);
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #001a38 0%, #002d5c 40%, #1a4a00 70%, #3a2000 100%);
-    min-height: 100vh;
-    color: var(--navy);
-  }
-  .kente-border {
-    height: 14px;
-    background: repeating-linear-gradient(90deg,
-      #CC0000 0px, #CC0000 20px, #FFD700 20px, #FFD700 40px,
-      #009900 40px, #009900 60px, #000000 60px, #000000 80px,
-      #FFD700 80px, #FFD700 100px, #CC0000 100px, #CC0000 120px);
-  }
-  .site-header {
-    background: linear-gradient(90deg, var(--navy) 0%, #003580 60%, #002147 100%);
-    padding: 18px 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  }
-  .logo-area { display: flex; align-items: center; gap: 18px; }
-  .upsa-logo {
-    width: 64px; height: 64px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px; font-weight: 900; color: var(--navy);
-    text-align: center; line-height: 1.2; border: 3px solid var(--gold2);
-    box-shadow: 0 0 18px rgba(201,168,76,0.5); flex-shrink: 0;
-  }
-  .header-text h1 { color: var(--gold2); font-size: 1.3rem; font-weight: 800; letter-spacing: 1px; }
-  .header-text p { color: #aac4ff; font-size: 0.82rem; margin-top: 2px; }
-  .hangout-logo {
-    background: linear-gradient(135deg, var(--gold) 0%, #e8c050 100%);
-    border-radius: 12px; padding: 8px 18px;
-    display: flex; flex-direction: column; align-items: center;
-    box-shadow: 0 4px 16px rgba(201,168,76,0.4); flex-shrink: 0;
-  }
-  .hangout-logo .h-icon { font-size: 1.8rem; line-height: 1; }
-  .hangout-logo .h-name { font-size: 0.65rem; font-weight: 900; color: var(--navy); letter-spacing: 1.5px; margin-top: 2px; }
-  .screen { display: none; padding: 30px 20px; max-width: 860px; margin: 0 auto; }
-  .screen.active { display: block; }
+:root {
+  --earth-deep: #0d1a0a;
+  --earth-dark: #1a2e0f;
+  --earth-mid: #2d4a1e;
+  --earth-forest: #3d6b2a;
+  --earth-moss: #5a8a3c;
+  --earth-sage: #7aaa55;
+  --earth-leaf: #9dc96e;
+  --earth-light: #c4e09a;
+  --soil-dark: #3b2507;
+  --soil-mid: #5c3d12;
+  --soil-warm: #8b6430;
+  --soil-tan: #c4a265;
+  --bark: #6b4c2a;
+  --amber: #d4881a;
+  --sun: #f0c040;
+  --cream: #f5f0e0;
+  --mist: rgba(196,224,154,0.08);
+  --shadow-root: 0 8px 40px rgba(13,26,10,0.6);
+  --shadow-leaf: 0 4px 20px rgba(61,107,42,0.3);
+}
 
-  /* HOME SCREEN */
-  #screen-home { text-align: center; }
-  .home-title { font-size: 2.2rem; font-weight: 900; color: var(--gold2); text-shadow: 2px 2px 12px rgba(0,0,0,0.5); margin-bottom: 10px; }
-  .home-sub { color: #ccd9ff; font-size: 1rem; margin-bottom: 32px; }
-  .week-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; margin: 30px 0; }
-  .week-card {
-    background: rgba(255,255,255,0.08); border: 2px solid rgba(201,168,76,0.4);
-    border-radius: 18px; padding: 28px 20px; text-align: center;
-    backdrop-filter: blur(10px); cursor: pointer;
-    transition: all 0.25s; position: relative; overflow: hidden;
-  }
-  .week-card:hover { border-color: var(--gold); background: rgba(255,255,255,0.13); transform: translateY(-4px); box-shadow: 0 12px 36px rgba(201,168,76,0.25); }
-  .week-card .wc-num { font-size: 3rem; font-weight: 900; color: var(--gold2); line-height: 1; }
-  .week-card .wc-label { color: var(--gold); font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin: 6px 0; }
-  .week-card .wc-title { color: #e0eaff; font-size: 0.9rem; font-weight: 600; line-height: 1.4; margin: 8px 0 16px; }
-  .week-card .wc-meta { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
-  .week-card .wc-tag { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--gold2); font-size: 0.72rem; padding: 4px 10px; border-radius: 20px; }
-  .week-card .wc-status { position: absolute; top: 12px; right: 14px; font-size: 0.7rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; }
-  .status-open { background: #009900; color: white; }
-  .status-done { background: #0066cc; color: white; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* LANDING */
-  #screen-landing { text-align: center; }
-  .week-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
-    color: var(--navy); font-size: 0.85rem; font-weight: 800;
-    padding: 6px 22px; border-radius: 30px; letter-spacing: 2px;
-    margin-bottom: 18px; text-transform: uppercase;
-  }
-  .landing-title { font-size: 2rem; font-weight: 900; color: var(--gold2); text-shadow: 2px 2px 12px rgba(0,0,0,0.5); line-height: 1.2; margin-bottom: 10px; }
-  .landing-sub { color: #ccd9ff; font-size: 1rem; margin-bottom: 30px; }
-  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 26px 0; }
-  .info-card {
-    background: rgba(255,255,255,0.08); border: 1px solid rgba(201,168,76,0.3);
-    border-radius: 14px; padding: 18px 12px; text-align: center; backdrop-filter: blur(8px);
-  }
-  .info-card .ic-icon { font-size: 2rem; margin-bottom: 6px; }
-  .info-card .ic-val { color: var(--gold2); font-size: 1.2rem; font-weight: 800; }
-  .info-card .ic-lbl { color: #aac4ff; font-size: 0.75rem; margin-top: 3px; }
-  .btn { display: inline-block; padding: 14px 36px; border: none; border-radius: 10px; cursor: pointer; font-size: 1rem; font-weight: 700; letter-spacing: 1px; transition: all 0.2s; text-decoration: none; }
-  .btn-primary { background: linear-gradient(135deg, var(--gold) 0%, #e8c050 100%); color: var(--navy); box-shadow: 0 4px 18px rgba(201,168,76,0.4); }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.5); }
-  .btn-secondary { background: rgba(255,255,255,0.1); color: var(--gold2); border: 1px solid var(--gold); margin-left: 10px; }
-  .btn-secondary:hover { background: rgba(255,255,255,0.15); }
-  .btn-danger { background: #cc2200; color: white; }
-  .btn-success { background: #009900; color: white; }
-  .btn-whatsapp { background: #25D366; color: white; }
-  .btn-back { background: rgba(255,255,255,0.08); color: var(--gold2); border: 1px solid rgba(201,168,76,0.3); }
-  .adinkra-divider { display: flex; align-items: center; gap: 14px; margin: 24px 0; color: var(--gold); font-size: 1.4rem; justify-content: center; }
-  .adinkra-divider::before, .adinkra-divider::after { content: ''; flex: 1; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-  .form-card { background: rgba(255,255,255,0.95); border-radius: 20px; padding: 36px; box-shadow: var(--shadow); max-width: 520px; margin: 0 auto; }
-  .form-card h2 { color: var(--navy); font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; }
-  .form-card p { color: #555; font-size: 0.88rem; margin-bottom: 24px; }
-  .form-group { margin-bottom: 18px; }
-  .form-group label { display: block; font-size: 0.82rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
-  .form-group input, .form-group select { width: 100%; padding: 12px 14px; border-radius: 9px; border: 2px solid #ddd; font-size: 0.95rem; color: var(--navy); transition: border-color 0.2s; background: #fafafa; }
-  .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--gold); background: #fff; }
-  .token-box { background: #001a38; color: var(--gold2); font-size: 1.5rem; font-weight: 900; letter-spacing: 5px; padding: 16px; border-radius: 12px; text-align: center; margin: 16px 0; cursor: pointer; border: 2px dashed var(--gold); display: flex; align-items: center; justify-content: center; gap: 12px; }
-  .token-input-area { display: flex; gap: 10px; }
-  .token-input-area input { flex: 1; padding: 14px; border-radius: 9px; border: 2px solid #ddd; font-size: 1.2rem; letter-spacing: 4px; text-align: center; font-weight: 700; color: var(--navy); text-transform: uppercase; }
-  .timer-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 999; background: linear-gradient(90deg, var(--navy), #002d5c); display: flex; align-items: center; justify-content: space-between; padding: 8px 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.3); border-bottom: 3px solid var(--gold); }
-  .timer-display { font-size: 1.5rem; font-weight: 900; color: var(--gold2); letter-spacing: 2px; font-variant-numeric: tabular-nums; }
-  .timer-display.danger { color: #ff4444; animation: blink 0.5s infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  .timer-label { color: #aac4ff; font-size: 0.78rem; }
-  .progress-wrap { flex: 1; margin: 0 20px; background: rgba(255,255,255,0.1); height: 8px; border-radius: 4px; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #ff9900); border-radius: 4px; transition: width 0.5s; }
-  #screen-exam { padding-top: 80px; }
-  .q-container { max-width: 760px; margin: 0 auto; }
-  .q-header { background: linear-gradient(135deg, var(--navy), #002d5c); border-radius: 16px 16px 0 0; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--gold); }
-  .q-num { color: var(--gold2); font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; }
-  .q-score-live { color: #aac4ff; font-size: 0.82rem; }
-  .q-body { background: rgba(255,255,255,0.97); padding: 30px 28px; border-radius: 0 0 16px 16px; box-shadow: var(--shadow); }
-  .q-text { font-size: 1.05rem; font-weight: 600; color: var(--navy); line-height: 1.6; margin-bottom: 22px; }
-  .options { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-  .option-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 10px; border: 2px solid #e8e8e8; cursor: pointer; transition: all 0.18s; background: #fafafa; font-size: 0.97rem; color: #333; }
-  .option-item:hover { border-color: var(--gold); background: #fffbf0; color: var(--navy); }
-  .option-item.selected { border-color: var(--navy); background: #e8f0ff; color: var(--navy); font-weight: 600; }
-  .option-item.correct { border-color: #00aa44; background: #e6ffed; color: #005522; }
-  .option-item.wrong { border-color: #cc2200; background: #ffe6e2; color: #660000; }
-  .opt-letter { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; background: var(--navy); color: var(--gold2); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; }
-  .q-nav { display: flex; justify-content: flex-end; margin-top: 24px; gap: 12px; }
-  .popup-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 2000; align-items: center; justify-content: center; }
-  .popup-overlay.show { display: flex; }
-  .popup-card { background: linear-gradient(135deg, var(--navy) 0%, #002d5c 100%); border: 3px solid var(--gold); border-radius: 20px; padding: 36px; max-width: 480px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
-  .popup-card h2 { color: var(--gold2); font-size: 1.5rem; margin-bottom: 14px; }
-  .popup-quote { color: #ccd9ff; font-size: 1.05rem; line-height: 1.7; font-style: italic; margin-bottom: 20px; }
-  .popup-lang { color: var(--gold); font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; font-weight: 700; }
-  #screen-results { padding-top: 20px; }
-  .result-card { background: rgba(255,255,255,0.97); border-radius: 20px; padding: 36px; box-shadow: var(--shadow); max-width: 720px; margin: 0 auto; }
-  .grade-badge { font-size: 4rem; font-weight: 900; width: 110px; height: 110px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 5px solid var(--gold); box-shadow: 0 0 30px rgba(201,168,76,0.4); }
-  .grade-A { background: #00aa44; color: white; }
-  .grade-B { background: #0066cc; color: white; }
-  .grade-C { background: #ff9900; color: white; }
-  .grade-D { background: #cc2200; color: white; }
-  .grade-F { background: #660000; color: white; }
-  .score-display { text-align: center; margin-bottom: 24px; }
-  .score-num { font-size: 2.8rem; font-weight: 900; color: var(--navy); }
-  .score-sub { color: #666; font-size: 1rem; }
-  .motivation-box { background: linear-gradient(135deg, #001a38 0%, #003580 100%); border: 2px solid var(--gold); border-radius: 14px; padding: 22px 26px; margin: 20px 0; text-align: center; }
-  .motivation-box p { color: #f5e4a8; font-style: italic; font-size: 1rem; line-height: 1.7; }
-  .motivation-box small { color: var(--gold); font-size: 0.75rem; letter-spacing: 2px; display: block; margin-top: 8px; }
-  .answer-breakdown { margin-top: 28px; }
-  .answer-breakdown h3 { color: var(--navy); font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; }
-  .ans-item { border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; font-size: 0.88rem; line-height: 1.6; }
-  .ans-correct { background: #e6ffed; border-left: 4px solid #00aa44; }
-  .ans-wrong { background: #ffe6e2; border-left: 4px solid #cc2200; }
-  .ans-item .ans-q { font-weight: 700; color: var(--navy); margin-bottom: 4px; }
-  .ans-item .ans-yours { color: #666; }
-  .ans-item .ans-right { color: #005522; font-weight: 600; }
-  .action-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 28px; }
-  .locked-box { background: rgba(255,255,255,0.95); border-radius: 20px; padding: 50px; text-align: center; max-width: 500px; margin: 60px auto; box-shadow: var(--shadow); }
-  .locked-box h2 { color: #cc2200; font-size: 1.6rem; margin-bottom: 16px; }
-  .locked-box p { color: #444; line-height: 1.7; }
-  .cheat-overlay { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(204,0,0,0.97); color: white; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 40px; }
-  .cheat-overlay.show { display: flex; }
-  .cheat-overlay h1 { font-size: 3rem; margin-bottom: 16px; animation: pulse 0.4s infinite; }
-  .cheat-overlay p { font-size: 1.2rem; max-width: 500px; }
-  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
-  .site-footer { text-align: center; padding: 20px; color: rgba(255,255,255,0.45); font-size: 0.78rem; letter-spacing: 2px; }
-  @media print {
-    body { background: white !important; }
-    .site-header, .timer-bar, .kente-border, .action-btns, .site-footer,
-    #screen-home, #screen-landing, #screen-register, #screen-token-login, #screen-instructions, #screen-exam,
-    .popup-overlay, .cheat-overlay { display: none !important; }
-    #screen-results { display: block !important; padding: 0 !important; }
-    .result-card { box-shadow: none !important; border: 1px solid #ccc; }
-    .screen { max-width: 100% !important; }
-    .btn { display: none !important; }
-    .action-btns { display: none !important; }
-  }
-  @media (max-width: 600px) {
-    .home-title { font-size: 1.5rem; }
-    .landing-title { font-size: 1.4rem; }
-    .form-card { padding: 24px 18px; }
-    .q-body { padding: 20px 16px; }
-    .action-btns { flex-direction: column; }
-    .btn { width: 100%; text-align: center; }
-  }
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--earth-deep);
+  min-height: 100vh;
+  color: var(--cream);
+  overflow-x: hidden;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%239dc96e' opacity='0.8'/%3E%3C/svg%3E") 10 10, auto;
+}
+
+/* LIVING BACKGROUND */
+.earth-bg {
+  position: fixed; inset: 0; z-index: 0; overflow: hidden;
+  background: radial-gradient(ellipse at 20% 80%, #1a3d0a 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, #0d2a05 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 50%, #152b0c 0%, #060e04 100%);
+}
+
+/* Animated roots/veins */
+.roots-svg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0.12;
+}
+
+/* Floating particles / spores */
+.spore {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--earth-leaf) 0%, transparent 70%);
+  animation: float-spore linear infinite;
+  pointer-events: none;
+}
+@keyframes float-spore {
+  0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-100px) translateX(var(--drift)) scale(1.5); opacity: 0; }
+}
+
+/* Leaf shimmer overlay */
+.canopy-overlay {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    130deg,
+    transparent 0px,
+    transparent 80px,
+    rgba(90,138,60,0.03) 80px,
+    rgba(90,138,60,0.03) 82px
+  );
+  animation: canopy-sway 8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes canopy-sway {
+  0% { transform: skewX(0deg) translateX(0); }
+  100% { transform: skewX(0.5deg) translateX(6px); }
+}
+
+/* HEADER */
+.site-header {
+  position: relative; z-index: 10;
+  background: linear-gradient(180deg, rgba(13,26,10,0.98) 0%, rgba(26,46,15,0.92) 100%);
+  border-bottom: 1px solid rgba(154,201,110,0.2);
+  padding: 0;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.6);
+}
+
+/* Kente-style soil stripe */
+.earth-stripe {
+  height: 6px;
+  background: repeating-linear-gradient(90deg,
+    #3d6b2a 0px, #3d6b2a 24px,
+    #5c3d12 24px, #5c3d12 48px,
+    #5a8a3c 48px, #5a8a3c 72px,
+    #8b6430 72px, #8b6430 96px,
+    #9dc96e 96px, #9dc96e 120px,
+    #3d6b2a 120px
+  );
+  animation: stripe-breathe 4s ease-in-out infinite alternate;
+}
+@keyframes stripe-breathe {
+  0% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 28px; gap: 20px;
+}
+
+.logo-earth {
+  width: 62px; height: 62px; border-radius: 50%;
+  background: conic-gradient(
+    var(--earth-forest) 0deg 90deg,
+    var(--soil-mid) 90deg 180deg,
+    var(--earth-moss) 180deg 270deg,
+    var(--soil-warm) 270deg 360deg
+  );
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(154,201,110,0.3), 0 0 20px rgba(90,138,60,0.4);
+  animation: earth-spin 20s linear infinite;
+  position: relative; overflow: hidden;
+}
+.logo-earth::after {
+  content: '';
+  position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.15) 0%, transparent 60%);
+}
+@keyframes earth-spin {
+  from { box-shadow: 0 0 0 3px rgba(154,201,110,0.3), 0 0 20px rgba(90,138,60,0.4); }
+  50% { box-shadow: 0 0 0 3px rgba(154,201,110,0.6), 0 0 35px rgba(90,138,60,0.7); }
+  to { box-shadow: 0 0 0 3px rgba(154,201,110,0.3), 0 0 20px rgba(90,138,60,0.4); }
+}
+
+.header-text h1 {
+  font-family: 'Playfair Display', serif;
+  color: var(--earth-leaf);
+  font-size: 1.25rem; font-weight: 900;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 12px rgba(90,138,60,0.5);
+}
+.header-text p { color: rgba(196,224,154,0.6); font-size: 0.8rem; margin-top: 3px; font-style: italic; }
+
+.pub-badge {
+  background: linear-gradient(135deg, var(--soil-mid) 0%, var(--bark) 100%);
+  border: 1px solid rgba(196,160,100,0.4);
+  border-radius: 10px; padding: 8px 16px;
+  display: flex; flex-direction: column; align-items: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4); flex-shrink: 0;
+}
+.pub-badge .pb-icon { font-size: 1.6rem; line-height: 1; }
+.pub-badge .pb-name { font-family: 'Space Mono', monospace; font-size: 0.58rem; font-weight: 700; color: var(--soil-tan); letter-spacing: 2px; margin-top: 3px; text-transform: uppercase; }
+
+/* SCREENS */
+.screen { display: none; padding: 36px 20px 60px; max-width: 900px; margin: 0 auto; position: relative; z-index: 5; }
+.screen.active { display: block; animation: screen-emerge 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes screen-emerge {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* HOME */
+#screen-home { text-align: center; }
+
+.grove-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem; font-weight: 900;
+  color: var(--earth-leaf);
+  text-shadow: 0 0 40px rgba(90,138,60,0.5), 0 4px 20px rgba(0,0,0,0.5);
+  line-height: 1.1; margin-bottom: 10px;
+  animation: title-breathe 5s ease-in-out infinite alternate;
+}
+@keyframes title-breathe {
+  0% { text-shadow: 0 0 30px rgba(90,138,60,0.4), 0 4px 20px rgba(0,0,0,0.5); }
+  100% { text-shadow: 0 0 60px rgba(154,201,110,0.7), 0 4px 20px rgba(0,0,0,0.5); }
+}
+.grove-sub {
+  color: rgba(196,224,154,0.7); font-size: 1.1rem; font-style: italic; margin-bottom: 40px;
+}
+
+.vine-divider {
+  display: flex; align-items: center; gap: 16px; margin: 28px 0;
+  color: var(--earth-moss); font-size: 1.2rem;
+}
+.vine-divider::before, .vine-divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--earth-forest), transparent);
+}
+
+/* WEEK CARDS */
+.week-grove { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin: 32px 0; }
+
+.grove-card {
+  background: linear-gradient(160deg, rgba(29,52,18,0.9) 0%, rgba(20,38,12,0.95) 100%);
+  border: 1px solid rgba(90,138,60,0.25);
+  border-radius: 20px; padding: 30px 22px;
+  text-align: center; cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative; overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+}
+.grove-card::before {
+  content: '';
+  position: absolute; inset: 0; border-radius: 20px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(90,138,60,0.12) 0%, transparent 70%);
+  opacity: 0; transition: opacity 0.4s;
+}
+.grove-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--earth-moss), transparent);
+  transform: scaleX(0); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.grove-card:hover { border-color: rgba(154,201,110,0.5); transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px rgba(61,107,42,0.2); }
+.grove-card:hover::before { opacity: 1; }
+.grove-card:hover::after { transform: scaleX(1); }
+
+.card-week-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem; font-weight: 900;
+  color: var(--earth-forest);
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(61,107,42,0.3);
+  transition: all 0.4s;
+}
+.grove-card:hover .card-week-num { color: var(--earth-leaf); text-shadow: 0 0 40px rgba(154,201,110,0.6); }
+
+.card-week-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem; font-weight: 700;
+  color: var(--earth-moss); letter-spacing: 3px; text-transform: uppercase;
+  margin: 6px 0 12px;
+}
+.card-week-title {
+  color: rgba(196,224,154,0.85); font-size: 0.92rem;
+  line-height: 1.5; margin-bottom: 18px; font-style: italic;
+}
+.card-tags { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.card-tag {
+  background: rgba(61,107,42,0.2); border: 1px solid rgba(90,138,60,0.3);
+  color: var(--earth-sage); font-size: 0.7rem;
+  padding: 4px 10px; border-radius: 20px;
+  font-family: 'Space Mono', monospace;
+}
+.card-status {
+  position: absolute; top: 14px; right: 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  background: rgba(61,107,42,0.4); color: var(--earth-leaf);
+  border: 1px solid rgba(154,201,110,0.3);
+}
+
+.card-leaf-deco {
+  position: absolute; font-size: 4rem; opacity: 0.04;
+  bottom: -10px; right: -10px; pointer-events: none;
+  transition: all 0.4s;
+}
+.grove-card:hover .card-leaf-deco { opacity: 0.09; transform: rotate(15deg) scale(1.1); }
+
+/* BUTTONS */
+.btn {
+  display: inline-block; padding: 13px 32px; border: none; border-radius: 12px;
+  cursor: pointer; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); text-decoration: none;
+  font-family: 'Crimson Pro', serif;
+}
+.btn-root {
+  background: linear-gradient(135deg, var(--earth-forest) 0%, var(--earth-moss) 100%);
+  color: var(--cream);
+  box-shadow: 0 4px 20px rgba(61,107,42,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.btn-root:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(61,107,42,0.6); background: linear-gradient(135deg, var(--earth-moss) 0%, var(--earth-leaf) 100%); color: var(--earth-deep); }
+.btn-bark {
+  background: rgba(196,224,154,0.07); color: var(--earth-leaf);
+  border: 1px solid rgba(90,138,60,0.4); margin-left: 10px;
+}
+.btn-bark:hover { background: rgba(196,224,154,0.12); border-color: var(--earth-sage); }
+.btn-soil {
+  background: linear-gradient(135deg, var(--soil-dark) 0%, var(--bark) 100%);
+  color: var(--soil-tan); border: 1px solid rgba(196,160,100,0.3);
+}
+.btn-soil:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+.btn-danger { background: linear-gradient(135deg, #5a1a0a, #8b2a15); color: #ffcab0; }
+.btn-danger:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(90,26,10,0.5); }
+.btn-moss {
+  background: linear-gradient(135deg, #1a4a2a, #2d6b40); color: #a0e4b0;
+  border: 1px solid rgba(100,200,130,0.3);
+}
+.btn-moss:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,74,42,0.5); }
+
+/* FORM CARD */
+.bark-card {
+  background: linear-gradient(160deg, rgba(22,38,14,0.97) 0%, rgba(16,28,10,0.99) 100%);
+  border: 1px solid rgba(90,138,60,0.2);
+  border-radius: 24px; padding: 38px;
+  box-shadow: var(--shadow-root), inset 0 1px 0 rgba(154,201,110,0.05);
+  max-width: 520px; margin: 0 auto;
+  position: relative; overflow: hidden;
+}
+.bark-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(154,201,110,0.4), transparent);
+}
+.bark-card h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--earth-leaf); font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 8px;
+}
+.bark-card > p { color: rgba(196,224,154,0.65); font-size: 0.9rem; margin-bottom: 26px; font-style: italic; }
+
+.form-group { margin-bottom: 18px; }
+.form-group label {
+  display: block; font-family: 'Space Mono', monospace;
+  font-size: 0.68rem; font-weight: 700;
+  color: var(--earth-sage); letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select {
+  width: 100%; padding: 12px 16px; border-radius: 10px;
+  border: 1px solid rgba(90,138,60,0.25);
+  background: rgba(13,26,10,0.8); color: var(--cream);
+  font-size: 0.95rem; font-family: 'Crimson Pro', serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none; border-color: rgba(154,201,110,0.5);
+  box-shadow: 0 0 0 3px rgba(90,138,60,0.15);
+}
+.form-group select option { background: #1a2e0f; color: var(--cream); }
+
+.token-display-box {
+  background: linear-gradient(135deg, rgba(13,26,10,0.95) 0%, rgba(29,52,18,0.9) 100%);
+  border: 1px dashed rgba(154,201,110,0.4); border-radius: 14px;
+  padding: 18px; text-align: center; cursor: pointer; margin: 16px 0;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  transition: all 0.3s;
+}
+.token-display-box:hover { border-color: var(--earth-leaf); background: rgba(61,107,42,0.15); }
+.token-display-box .tok-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.8rem; font-weight: 700; color: var(--earth-leaf);
+  letter-spacing: 6px; text-shadow: 0 0 20px rgba(154,201,110,0.4);
+}
+.token-input-row { display: flex; gap: 10px; }
+.token-input-row input {
+  flex: 1; font-family: 'Space Mono', monospace !important;
+  font-size: 1.3rem !important; letter-spacing: 5px;
+  text-align: center; text-transform: uppercase;
+}
+
+/* LANDING */
+#screen-landing { text-align: center; }
+.season-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(61,107,42,0.4) 0%, rgba(90,138,60,0.3) 100%);
+  border: 1px solid rgba(154,201,110,0.3);
+  color: var(--earth-leaf); font-family: 'Space Mono', monospace;
+  font-size: 0.72rem; font-weight: 700;
+  padding: 7px 24px; border-radius: 30px; letter-spacing: 3px;
+  margin-bottom: 20px; text-transform: uppercase;
+}
+.landing-h { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--earth-leaf); text-shadow: 0 2px 20px rgba(90,138,60,0.4); line-height: 1.2; margin-bottom: 10px; }
+.landing-sub { color: rgba(196,224,154,0.6); font-size: 1rem; font-style: italic; margin-bottom: 30px; }
+
+.stat-pods { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin: 28px 0; }
+.stat-pod {
+  background: linear-gradient(160deg, rgba(26,46,15,0.8) 0%, rgba(16,28,10,0.9) 100%);
+  border: 1px solid rgba(90,138,60,0.2); border-radius: 16px;
+  padding: 18px 12px; text-align: center;
+}
+.stat-pod .sp-icon { font-size: 1.8rem; margin-bottom: 6px; display: block; }
+.stat-pod .sp-val { color: var(--earth-leaf); font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; }
+.stat-pod .sp-lbl { color: rgba(154,201,110,0.6); font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+
+/* TIMER BAR */
+.timer-bark {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  background: linear-gradient(180deg, rgba(8,16,5,0.98) 0%, rgba(13,26,10,0.95) 100%);
+  border-bottom: 1px solid rgba(90,138,60,0.3);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
+.timer-clock {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.6rem; font-weight: 700; color: var(--earth-leaf);
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(154,201,110,0.4);
+}
+.timer-clock.danger { color: #ff8866; text-shadow: 0 0 20px rgba(255,100,50,0.5); animation: pulse-danger 0.8s infinite; }
+@keyframes pulse-danger { 0%,100%{opacity:1} 50%{opacity:0.6} }
+.timer-lbl { color: rgba(154,201,110,0.5); font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; }
+.vine-progress { flex: 1; margin: 0 24px; height: 6px; background: rgba(90,138,60,0.15); border-radius: 3px; overflow: hidden; }
+.vine-fill { height: 100%; background: linear-gradient(90deg, var(--earth-forest), var(--earth-leaf), var(--sun)); border-radius: 3px; transition: width 0.8s linear; position: relative; }
+.vine-fill::after { content: '🌿'; position: absolute; right: -4px; top: -6px; font-size: 14px; }
+
+/* EXAM SCREEN */
+#screen-exam { padding-top: 90px; }
+.q-shell { max-width: 780px; margin: 0 auto; }
+.q-canopy {
+  background: linear-gradient(135deg, rgba(20,38,12,0.95) 0%, rgba(29,52,18,0.9) 100%);
+  border: 1px solid rgba(90,138,60,0.3); border-radius: 20px 20px 0 0;
+  padding: 18px 26px; display: flex; justify-content: space-between; align-items: center;
+}
+.q-canopy-num { font-family: 'Space Mono', monospace; color: var(--earth-leaf); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; }
+.q-canopy-ans { color: rgba(154,201,110,0.6); font-family: 'Space Mono', monospace; font-size: 0.72rem; }
+.q-ground {
+  background: linear-gradient(180deg, rgba(22,38,14,0.99) 0%, rgba(16,28,10,0.99) 100%);
+  border: 1px solid rgba(90,138,60,0.2); border-top: none;
+  border-radius: 0 0 20px 20px;
+  padding: 32px 30px;
+  box-shadow: var(--shadow-root);
+}
+.q-stem {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.1rem; font-weight: 600; color: var(--cream);
+  line-height: 1.7; margin-bottom: 26px;
+}
+.options-grove { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.opt-leaf {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; border-radius: 12px;
+  border: 1px solid rgba(90,138,60,0.15); cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(13,26,10,0.5);
+  font-size: 0.97rem; color: rgba(196,224,154,0.85);
+}
+.opt-leaf:hover { border-color: rgba(154,201,110,0.4); background: rgba(61,107,42,0.12); color: var(--cream); transform: translateX(4px); }
+.opt-leaf.selected { border-color: rgba(154,201,110,0.6); background: rgba(61,107,42,0.25); color: var(--earth-light); }
+.opt-leaf.correct { border-color: rgba(100,200,100,0.7); background: rgba(30,80,30,0.4); color: #a0ffb0; }
+.opt-leaf.wrong { border-color: rgba(200,60,30,0.6); background: rgba(80,20,10,0.4); color: #ffb0a0; }
+.opt-bud {
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--earth-mid), var(--earth-forest));
+  color: var(--earth-leaf); display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.78rem;
+  border: 1px solid rgba(90,138,60,0.3);
+}
+.opt-leaf.selected .opt-bud { background: linear-gradient(135deg, var(--earth-forest), var(--earth-moss)); border-color: var(--earth-leaf); }
+.q-root-nav { display: flex; justify-content: flex-end; margin-top: 26px; gap: 12px; }
+
+/* RESULTS */
+.result-grove {
+  background: linear-gradient(160deg, rgba(20,36,12,0.98) 0%, rgba(14,24,8,0.99) 100%);
+  border: 1px solid rgba(90,138,60,0.25); border-radius: 24px;
+  padding: 40px; box-shadow: var(--shadow-root);
+  max-width: 740px; margin: 0 auto;
+}
+.result-badge {
+  font-family: 'Playfair Display', serif;
+  font-size: 4.5rem; font-weight: 900;
+  width: 120px; height: 120px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 22px;
+}
+.grade-A { background: radial-gradient(circle, #1a6b2a, #0d3d18); color: #a0ffb0; border: 3px solid rgba(100,220,120,0.5); box-shadow: 0 0 40px rgba(30,150,60,0.4); }
+.grade-B { background: radial-gradient(circle, #1a3d6b, #0d1e38); color: #a0c8ff; border: 3px solid rgba(100,160,240,0.5); box-shadow: 0 0 40px rgba(30,80,200,0.4); }
+.grade-C { background: radial-gradient(circle, #6b4a1a, #3d2a0d); color: #ffd8a0; border: 3px solid rgba(200,160,60,0.5); box-shadow: 0 0 40px rgba(180,120,30,0.4); }
+.grade-D { background: radial-gradient(circle, #6b1a1a, #3d0d0d); color: #ffa0a0; border: 3px solid rgba(200,60,60,0.5); box-shadow: 0 0 40px rgba(180,30,30,0.4); }
+
+.score-bloom { text-align: center; margin-bottom: 26px; }
+.score-big { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: var(--earth-leaf); }
+.score-note { color: rgba(196,224,154,0.6); font-size: 1rem; font-style: italic; }
+
+.motive-pod {
+  background: linear-gradient(135deg, rgba(16,32,10,0.9) 0%, rgba(29,52,18,0.8) 100%);
+  border: 1px solid rgba(90,138,60,0.25); border-radius: 16px;
+  padding: 24px 28px; margin: 22px 0; text-align: center;
+}
+.motive-pod p { color: rgba(240,220,160,0.9); font-style: italic; font-size: 1rem; line-height: 1.8; }
+.motive-pod small { color: var(--earth-sage); font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 2px; display: block; margin-top: 10px; text-transform: uppercase; }
+
+.breakdown-h { color: var(--earth-leaf); font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin: 28px 0 16px; }
+.ans-pod { border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; font-size: 0.88rem; line-height: 1.6; }
+.ans-correct { background: rgba(20,60,20,0.5); border-left: 3px solid rgba(100,200,100,0.6); }
+.ans-wrong { background: rgba(60,15,10,0.5); border-left: 3px solid rgba(200,60,30,0.6); }
+.ans-q { font-weight: 600; color: rgba(196,224,154,0.9); margin-bottom: 4px; }
+.ans-yours { color: rgba(196,224,154,0.55); }
+.ans-right { color: #80d890; font-weight: 600; }
+
+.action-roots { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 32px; }
+
+/* INSTRUCTIONS */
+.instruction-scroll {
+  background: rgba(16,32,10,0.8); border-radius: 12px; padding: 18px;
+  border-left: 3px solid rgba(90,138,60,0.5); margin-bottom: 18px;
+}
+.instruction-scroll p { color: rgba(196,224,154,0.75); font-size: 0.9rem; line-height: 2; }
+
+.student-leaf {
+  background: rgba(26,46,15,0.6); border: 1px solid rgba(90,138,60,0.2);
+  border-radius: 10px; padding: 14px; font-size: 0.88rem;
+  color: rgba(196,224,154,0.8); margin-bottom: 20px;
+}
+
+/* LOCKED */
+.locked-grove {
+  background: linear-gradient(160deg, rgba(40,10,10,0.95) 0%, rgba(25,6,6,0.99) 100%);
+  border: 1px solid rgba(150,40,20,0.3); border-radius: 24px;
+  padding: 50px; text-align: center; max-width: 500px; margin: 60px auto;
+}
+.locked-grove h2 { font-family: 'Playfair Display', serif; color: #ff8866; font-size: 1.7rem; margin-bottom: 16px; }
+.locked-grove p { color: rgba(255,200,180,0.7); line-height: 1.8; }
+
+/* POPUP */
+.popup-canopy { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+.popup-canopy.show { display: flex; }
+.popup-bud {
+  background: linear-gradient(160deg, rgba(20,40,12,0.98) 0%, rgba(30,55,18,0.99) 100%);
+  border: 1px solid rgba(154,201,110,0.3); border-radius: 24px;
+  padding: 40px; max-width: 480px; width: 90%; text-align: center;
+  box-shadow: var(--shadow-root), 0 0 60px rgba(61,107,42,0.3);
+  animation: popup-grow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes popup-grow { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.popup-bud h2 { font-family: 'Playfair Display', serif; color: var(--earth-leaf); font-size: 1.5rem; margin-bottom: 16px; }
+.popup-lang { color: var(--earth-sage); font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
+.popup-wisdom { color: rgba(196,224,154,0.85); font-size: 1.05rem; line-height: 1.8; font-style: italic; margin-bottom: 24px; }
+
+/* CHEAT */
+.cheat-vines { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(60,10,5,0.97); color: #ffcab0; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 40px; }
+.cheat-vines.show { display: flex; }
+.cheat-vines h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin-bottom: 16px; color: #ff8866; animation: cheat-shake 0.4s infinite; }
+@keyframes cheat-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+.cheat-vines p { font-size: 1.1rem; max-width: 500px; line-height: 1.7; }
+
+/* FOOTER */
+.earth-footer { text-align: center; padding: 24px 20px; color: rgba(90,138,60,0.35); font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; position: relative; z-index: 5; }
+
+@media print {
+  body { background: white !important; }
+  .site-header, .timer-bark, .earth-bg, .earth-footer,
+  #screen-home, #screen-landing, #screen-register, #screen-token-login, #screen-instructions, #screen-exam,
+  .popup-canopy, .cheat-vines { display: none !important; }
+  #screen-results { display: block !important; padding: 0 !important; }
+  .result-grove { box-shadow: none !important; border: 1px solid #ccc; background: white; }
+  .result-grove * { color: #000 !important; }
+  .screen { max-width: 100% !important; }
+  .action-roots { display: none !important; }
+}
+@media (max-width: 600px) {
+  .grove-title { font-size: 2rem; }
+  .landing-h { font-size: 1.5rem; }
+  .bark-card { padding: 24px 18px; }
+  .q-ground { padding: 22px 18px; }
+  .action-roots { flex-direction: column; }
+  .btn { width: 100%; text-align: center; }
+}
 </style>
 </head>
 <body>
 
-<div class="kente-border"></div>
+<!-- LIVING BACKGROUND -->
+<div class="earth-bg">
+  <svg class="roots-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+    <path d="M100,800 C150,600 80,400 200,300 C300,200 400,350 350,200 C300,50 450,100 500,50" stroke="#5a8a3c" stroke-width="1.5" fill="none"/>
+    <path d="M0,700 C100,650 200,700 250,580 C300,460 200,380 350,300 C500,220 550,400 650,350 C750,300 700,150 800,100" stroke="#3d6b2a" stroke-width="1" fill="none"/>
+    <path d="M1200,800 C1100,700 1050,750 950,650 C850,550 900,400 800,350 C700,300 650,450 550,400 C450,350 500,200 450,100" stroke="#5a8a3c" stroke-width="1.5" fill="none"/>
+    <path d="M600,800 C580,700 620,650 600,550 C580,450 540,400 560,300 C580,200 620,250 640,150" stroke="#3d6b2a" stroke-width="0.8" fill="none"/>
+    <path d="M300,800 C320,720 280,680 300,600 C320,520 380,500 360,420 C340,340 280,320 300,240 C320,160 380,180 370,100" stroke="#2d4a1e" stroke-width="1.2" fill="none"/>
+    <path d="M900,800 C880,750 920,700 900,640 C880,580 840,560 860,480 C880,400 940,380 920,300 C900,220 860,240 880,160" stroke="#2d4a1e" stroke-width="0.9" fill="none"/>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 3,5; -2,3; 0,0" dur="12s" repeatCount="indefinite"/>
+  </svg>
+  <div class="canopy-overlay"></div>
+</div>
+
+<div class="earth-stripe"></div>
 
 <header class="site-header">
-  <div class="logo-area">
-    <div class="upsa-logo">🎓<br>UPSA</div>
-    <div class="header-text">
-      <h1>BGEC113 – Environmental Management</h1>
-      <p>University of Professional Studies, Accra &nbsp;|&nbsp; First Semester 2025/2026</p>
+  <div class="header-inner">
+    <div style="display:flex;align-items:center;gap:18px;">
+      <div class="logo-earth">🌍</div>
+      <div class="header-text">
+        <h1>BGEC113 – Environmental Management</h1>
+        <p>University of Professional Studies, Accra &nbsp;·&nbsp; First Semester 2025/2026</p>
+      </div>
     </div>
-  </div>
-  <div class="hangout-logo">
-    <div class="h-icon">📚</div>
-    <div class="h-name">HANGOUT</div>
-    <div class="h-name">PUBLICATIONS</div>
+    <div class="pub-badge">
+      <div class="pb-icon">📚</div>
+      <div class="pb-name">HangOut</div>
+      <div class="pb-name">Publications</div>
+    </div>
   </div>
 </header>
 
-<!-- HOME SCREEN -->
+<!-- HOME -->
 <div id="screen-home" class="screen active">
-  <div style="text-align:center; margin-bottom:30px;">
-    <div class="home-title">BGEC113 Examination Hub</div>
-    <div class="home-sub">Select a week's examination to begin &nbsp;·&nbsp; HangOut Publications &nbsp;·&nbsp; UPSA</div>
-    <div class="adinkra-divider">✦ ☥ ✦</div>
+  <div style="text-align:center;margin-bottom:10px;">
+    <div class="grove-title">🌿 Earth Exam Hub</div>
+    <div class="grove-sub">Choose your week · grow your knowledge · honour the Earth</div>
+    <div class="vine-divider">🍃</div>
   </div>
-  <div class="week-cards">
-    <div class="week-card" onclick="selectWeek(3)">
-      <span class="wc-status status-open">OPEN</span>
-      <div class="wc-num">3</div>
-      <div class="wc-label">Week 3 Exam</div>
-      <div class="wc-title">Environmental Management &amp; Its Evolution</div>
-      <div class="wc-meta">
-        <span class="wc-tag">❓ 50 Questions</span>
-        <span class="wc-tag">⏱️ 50 mins</span>
-        <span class="wc-tag">🔑 Token</span>
+  <div class="week-grove">
+    <div class="grove-card" onclick="selectWeek(3)">
+      <span class="card-status">🟢 Open</span>
+      <div class="card-week-num">3</div>
+      <div class="card-week-label">Week 3 Exam</div>
+      <div class="card-week-title">Environmental Management &amp; Its Evolution</div>
+      <div class="card-tags">
+        <span class="card-tag">❓ 50 Qs</span>
+        <span class="card-tag">⏱ 50 min</span>
+        <span class="card-tag">🔑 Token</span>
       </div>
+      <div class="card-leaf-deco">🌳</div>
     </div>
-    <div class="week-card" onclick="selectWeek(4)">
-      <span class="wc-status status-open">OPEN</span>
-      <div class="wc-num">4</div>
-      <div class="wc-label">Week 4 Exam</div>
-      <div class="wc-title">Environmental Economics &amp; Market Failures</div>
-      <div class="wc-meta">
-        <span class="wc-tag">❓ 50 Questions</span>
-        <span class="wc-tag">⏱️ 50 mins</span>
-        <span class="wc-tag">🔑 Token</span>
+    <div class="grove-card" onclick="selectWeek(4)">
+      <span class="card-status">🟢 Open</span>
+      <div class="card-week-num">4</div>
+      <div class="card-week-label">Week 4 Exam</div>
+      <div class="card-week-title">Environmental Economics &amp; Market Failures</div>
+      <div class="card-tags">
+        <span class="card-tag">❓ 50 Qs</span>
+        <span class="card-tag">⏱ 50 min</span>
+        <span class="card-tag">🔑 Token</span>
       </div>
+      <div class="card-leaf-deco">🌿</div>
     </div>
-    <div class="week-card" onclick="selectWeek(5)">
-      <span class="wc-status status-open">OPEN</span>
-      <div class="wc-num">5</div>
-      <div class="wc-label">Week 5 Exam</div>
-      <div class="wc-title">CPR Management, Economic Instruments &amp; Material Balance</div>
-      <div class="wc-meta">
-        <span class="wc-tag">❓ 50 Questions</span>
-        <span class="wc-tag">⏱️ 50 mins</span>
-        <span class="wc-tag">🔑 Token</span>
+    <div class="grove-card" onclick="selectWeek(5)">
+      <span class="card-status">🟢 Open</span>
+      <div class="card-week-num">5</div>
+      <div class="card-week-label">Week 5 Exam</div>
+      <div class="card-week-title">CPR Management, Economic Instruments &amp; Material Balance</div>
+      <div class="card-tags">
+        <span class="card-tag">❓ 50 Qs</span>
+        <span class="card-tag">⏱ 50 min</span>
+        <span class="card-tag">🔑 Token</span>
       </div>
+      <div class="card-leaf-deco">🌱</div>
     </div>
   </div>
-  <div style="text-align:center; color:#aac4ff; font-size:0.82rem; margin-top:10px;">
-    🛡️ 12 Anti-Cheat Security Measures Active &nbsp;|&nbsp; Each exam requires a unique token &nbsp;|&nbsp; 3 attempts per exam
+  <div style="text-align:center;color:rgba(90,138,60,0.5);font-family:'Space Mono',monospace;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;margin-top:10px;">
+    🛡 12 anti-cheat measures active &nbsp;·&nbsp; separate token per exam &nbsp;·&nbsp; 3 attempts per week
   </div>
 </div>
 
 <!-- LANDING -->
 <div id="screen-landing" class="screen">
-  <div class="week-badge" id="landing-badge">Week X Examination</div>
-  <div class="landing-title" id="landing-title">BGEC113</div>
-  <div class="landing-sub" id="landing-sub">BGEC113 · Mid-Semester Assessment · UPSA</div>
-  <div class="info-grid">
-    <div class="info-card"><div class="ic-icon">❓</div><div class="ic-val">50</div><div class="ic-lbl">Questions (MCQ)</div></div>
-    <div class="info-card"><div class="ic-icon">⏱️</div><div class="ic-val">50 mins</div><div class="ic-lbl">Time Allowed</div></div>
-    <div class="info-card"><div class="ic-icon">🔑</div><div class="ic-val">3</div><div class="ic-lbl">Max Attempts</div></div>
-    <div class="info-card"><div class="ic-icon">🔒</div><div class="ic-val">Token</div><div class="ic-lbl">Required to Enter</div></div>
+  <div style="text-align:center;">
+    <div class="season-badge" id="landing-badge">Week X Examination</div>
+    <div class="landing-h" id="landing-title">BGEC113</div>
+    <div class="landing-sub" id="landing-sub">BGEC113 · Assessment · UPSA</div>
   </div>
-  <div class="adinkra-divider">✦ ☥ ✦</div>
-  <button class="btn btn-primary" onclick="goTo('register')">Generate My Token &amp; Register →</button>
-  <button class="btn btn-secondary" onclick="goTo('token-login')">I Have My Token →</button>
-  <br><br>
-  <button class="btn btn-back" onclick="goTo('home')" style="margin-top:8px">← Back to Week Selection</button>
-  <div style="margin-top:20px; color:#aac4ff; font-size:0.8rem;">
-    📌 One question at a time &nbsp;|&nbsp; No going back &nbsp;|&nbsp; Auto-submit at 0:00<br>
-    🛡️ 12 Anti-Cheat Security Measures Active
+  <div class="stat-pods">
+    <div class="stat-pod"><span class="sp-icon">❓</span><div class="sp-val">50</div><div class="sp-lbl">Questions</div></div>
+    <div class="stat-pod"><span class="sp-icon">⏱️</span><div class="sp-val">50 min</div><div class="sp-lbl">Time Limit</div></div>
+    <div class="stat-pod"><span class="sp-icon">🔑</span><div class="sp-val">3×</div><div class="sp-lbl">Max Attempts</div></div>
+    <div class="stat-pod"><span class="sp-icon">🛡️</span><div class="sp-val">12</div><div class="sp-lbl">Security Layers</div></div>
+  </div>
+  <div class="vine-divider">🌱</div>
+  <div style="text-align:center;">
+    <button class="btn btn-root" onclick="goTo('register')">🌱 Generate Token &amp; Register →</button>
+    <button class="btn btn-bark" onclick="goTo('token-login')">I Have My Token →</button>
+    <br><br>
+    <button class="btn btn-bark" onclick="goTo('home')" style="margin-top:6px;font-size:0.88rem;">← Back to Week Selection</button>
+  </div>
+  <div style="text-align:center;margin-top:24px;color:rgba(154,201,110,0.5);font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:1.5px;">
+    📌 ONE QUESTION AT A TIME &nbsp;·&nbsp; NO GOING BACK &nbsp;·&nbsp; AUTO-SUBMIT AT 0:00
   </div>
 </div>
 
 <!-- REGISTER -->
 <div id="screen-register" class="screen">
-  <div class="form-card">
-    <h2>📝 Student Registration</h2>
-    <p>Fill in your details to generate your unique exam token. Copy and save it — you'll need it to enter the exam.</p>
-    <div class="form-group">
-      <label>Full Name *</label>
-      <input type="text" id="reg-name" placeholder="e.g. Kofi Asante Mensah" />
-    </div>
-    <div class="form-group">
-      <label>Student Index Number *</label>
-      <input type="text" id="reg-index" placeholder="e.g. UPSAxxx/xx/xxxx" />
-    </div>
+  <div class="bark-card">
+    <h2>🌱 Student Registration</h2>
+    <p>Root yourself in — fill your details to grow your unique exam token. Save it well.</p>
+    <div class="form-group"><label>Full Name *</label><input type="text" id="reg-name" placeholder="e.g. Kofi Asante Mensah"/></div>
+    <div class="form-group"><label>Student Index Number *</label><input type="text" id="reg-index" placeholder="e.g. UPSAxxx/xx/xxxx"/></div>
     <div class="form-group">
       <label>Programme *</label>
       <select id="reg-prog">
-        <option value="">-- Select Programme --</option>
-        <option>BA Business Administration</option>
-        <option>BSc Accounting</option>
-        <option>BSc Banking and Finance</option>
-        <option>BSc Marketing</option>
-        <option>BSc Human Resource Management</option>
-        <option>BSc Public Administration</option>
-        <option>BSc Information Technology</option>
-        <option>BSc Computer Science</option>
-        <option>BSc Environmental Management</option>
-        <option>BSc Real Estate Management</option>
-        <option>BSc Logistics and Supply Chain</option>
-        <option>LLB Law</option>
-        <option>BSc Economics</option>
-        <option>BSc Statistics</option>
-        <option>MBA</option>
-        <option>MPhil</option>
-        <option>Other</option>
+        <option value="">— Select Programme —</option>
+        <option>BA Business Administration</option><option>BSc Accounting</option>
+        <option>BSc Banking and Finance</option><option>BSc Marketing</option>
+        <option>BSc Human Resource Management</option><option>BSc Public Administration</option>
+        <option>BSc Information Technology</option><option>BSc Computer Science</option>
+        <option>BSc Environmental Management</option><option>BSc Real Estate Management</option>
+        <option>BSc Logistics and Supply Chain</option><option>LLB Law</option>
+        <option>BSc Economics</option><option>BSc Statistics</option>
+        <option>MBA</option><option>MPhil</option><option>Other</option>
       </select>
     </div>
-    <button class="btn btn-primary" style="width:100%" onclick="generateToken()">🔑 Generate My Token</button>
+    <button class="btn btn-root" style="width:100%" onclick="generateToken()">🔑 Grow My Token</button>
     <div id="token-display" style="display:none">
-      <div class="adinkra-divider">✦ YOUR TOKEN ✦</div>
-      <div class="token-box" onclick="copyToken()" id="token-val">
-        <span id="token-text">------</span>
+      <div class="vine-divider" style="margin:18px 0 10px;">✦ YOUR TOKEN ✦</div>
+      <div class="token-display-box" onclick="copyToken()" id="token-val">
+        <span class="tok-val" id="token-text">——————</span>
         <span style="font-size:1.2rem">📋</span>
       </div>
-      <small style="color:#888; text-align:center; display:block; margin-bottom:14px;">Click token to copy · Token valid for 3 attempts · Keep it safe</small>
-      <button class="btn btn-primary" style="width:100%" onclick="proceedWithToken()">Enter Examination Hub →</button>
+      <small style="color:rgba(154,201,110,0.5);text-align:center;display:block;margin-bottom:14px;font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:1px;">Click to copy · Valid for 3 attempts · Guard it well</small>
+      <button class="btn btn-root" style="width:100%" onclick="proceedWithToken()">Enter the Grove →</button>
     </div>
-    <div id="reg-error" style="color:#cc2200; font-size:0.85rem; margin-top:10px; display:none"></div>
-    <p style="margin-top:20px; text-align:center"><a href="#" onclick="goTo('landing')" style="color:var(--navy); font-size:0.85rem">← Back</a></p>
+    <div id="reg-error" style="color:#ff8866;font-size:0.85rem;margin-top:10px;display:none"></div>
+    <p style="margin-top:20px;text-align:center"><a href="#" onclick="goTo('landing')" style="color:var(--earth-sage);font-size:0.85rem;font-family:'Space Mono',monospace;">← Back</a></p>
   </div>
 </div>
 
 <!-- TOKEN LOGIN -->
 <div id="screen-token-login" class="screen">
-  <div class="form-card">
+  <div class="bark-card">
     <h2>🔑 Token Login</h2>
-    <p>Enter your previously generated token to access the examination hub.</p>
+    <p>Enter your previously-grown token to re-enter the examination grove.</p>
     <div class="form-group">
       <label>Your Token</label>
-      <div class="token-input-area">
-        <input type="text" id="login-token" placeholder="XXXXXX" maxlength="8" style="text-transform:uppercase;font-size:1.3rem;letter-spacing:4px;font-weight:800" />
-        <button class="btn btn-primary" onclick="loginWithToken()">Enter</button>
+      <div class="token-input-row">
+        <input type="text" id="login-token" placeholder="XXXXXXX" maxlength="8" style="text-transform:uppercase;"/>
+        <button class="btn btn-root" onclick="loginWithToken()">Enter</button>
       </div>
     </div>
-    <div id="token-error" style="color:#cc2200; font-size:0.85rem; margin-top:10px; display:none"></div>
-    <p style="margin-top:20px; text-align:center"><a href="#" onclick="goTo('landing')" style="color:var(--navy); font-size:0.85rem">← Back</a></p>
+    <div id="token-error" style="color:#ff8866;font-size:0.85rem;margin-top:10px;display:none"></div>
+    <p style="margin-top:20px;text-align:center"><a href="#" onclick="goTo('landing')" style="color:var(--earth-sage);font-size:0.85rem;font-family:'Space Mono',monospace;">← Back</a></p>
   </div>
 </div>
 
-<!-- EXAM INSTRUCTIONS -->
+<!-- INSTRUCTIONS -->
 <div id="screen-instructions" class="screen">
-  <div class="form-card" style="max-width:620px">
-    <h2>📋 Examination Instructions</h2>
-    <div style="margin: 16px 0; padding: 14px; background:#fff8e6; border-radius:10px; border-left:4px solid var(--gold)">
-      <p style="margin:0; color:#555; font-size:0.88rem; line-height:1.8">
-        <strong>1.</strong> This exam contains <strong>50 MCQ questions</strong> — one at a time.<br>
-        <strong>2.</strong> You have <strong>50 minutes</strong>. The exam auto-submits at zero.<br>
-        <strong>3.</strong> Once you move to the next question, you <strong>cannot go back</strong>.<br>
-        <strong>4.</strong> Do not switch tabs or minimize the window — <strong>alarm will sound</strong>.<br>
-        <strong>5.</strong> Do not use right-click, keyboard shortcuts, or developer tools.<br>
-        <strong>6.</strong> This is attempt <strong id="attempt-num">1</strong> of 3. Use them wisely.<br>
-        <strong>7.</strong> Results will be shown immediately after submission.<br>
-        <strong>8.</strong> You can print and share results via WhatsApp after the exam.
+  <div class="bark-card" style="max-width:620px">
+    <h2>📋 Grove Rules</h2>
+    <div class="instruction-scroll">
+      <p>
+        <strong>1.</strong> This exam holds <strong>50 MCQ questions</strong> — one leaf at a time.<br>
+        <strong>2.</strong> You have <strong>50 minutes</strong>. The forest auto-submits at zero.<br>
+        <strong>3.</strong> Once you move to the next question, you <strong>cannot return</strong>.<br>
+        <strong>4.</strong> Do not switch tabs — <strong>the roots will sense it and alarm will sound</strong>.<br>
+        <strong>5.</strong> No right-click, shortcuts, or developer tools in this grove.<br>
+        <strong>6.</strong> This is attempt <strong id="attempt-num">1</strong> of 3. Tread carefully.<br>
+        <strong>7.</strong> Results bloom immediately after submission.<br>
+        <strong>8.</strong> You may print or share results via WhatsApp.
       </p>
     </div>
-    <div id="student-info-preview" style="background:#f0f4ff; border-radius:10px; padding:14px; font-size:0.9rem; color:var(--navy); margin-bottom:20px"></div>
-    <button class="btn btn-primary" style="width:100%" onclick="startExam()">🚀 Begin Examination</button>
+    <div class="student-leaf" id="student-info-preview"></div>
+    <button class="btn btn-root" style="width:100%" onclick="startExam()">🌳 Begin Examination</button>
   </div>
 </div>
 
 <!-- EXAM -->
 <div id="screen-exam" class="screen">
-  <div class="timer-bar">
+  <div class="timer-bark">
     <div>
-      <div class="timer-label">TIME REMAINING</div>
-      <div class="timer-display" id="timer-display">50:00</div>
+      <div class="timer-lbl">Time Remaining</div>
+      <div class="timer-clock" id="timer-display">50:00</div>
     </div>
-    <div class="progress-wrap"><div class="progress-fill" id="progress-fill" style="width:100%"></div></div>
+    <div class="vine-progress"><div class="vine-fill" id="progress-fill" style="width:100%"></div></div>
     <div style="text-align:right">
-      <div class="timer-label">QUESTION</div>
-      <div style="color:var(--gold2); font-weight:800" id="q-counter">1 / 50</div>
+      <div class="timer-lbl">Question</div>
+      <div style="color:var(--earth-leaf);font-family:'Space Mono',monospace;font-weight:700;" id="q-counter">1 / 50</div>
     </div>
   </div>
-  <div class="q-container">
-    <div class="q-header">
-      <div class="q-num" id="q-num-label">Question 1 of 50</div>
-      <div class="q-score-live" id="q-answered-label">0 answered</div>
+  <div class="q-shell">
+    <div class="q-canopy">
+      <div class="q-canopy-num" id="q-num-label">Question 1 of 50</div>
+      <div class="q-canopy-ans" id="q-answered-label">0 answered</div>
     </div>
-    <div class="q-body">
-      <div class="q-text" id="q-text"></div>
-      <ul class="options" id="q-options"></ul>
-      <div class="q-nav">
-        <button class="btn btn-primary" id="btn-next" onclick="nextQuestion()">Next Question →</button>
-        <button class="btn btn-danger" id="btn-submit" style="display:none" onclick="submitExam()">Submit Exam ✓</button>
+    <div class="q-ground">
+      <div class="q-stem" id="q-text"></div>
+      <ul class="options-grove" id="q-options"></ul>
+      <div class="q-root-nav">
+        <button class="btn btn-root" id="btn-next" onclick="nextQuestion()">Next →</button>
+        <button class="btn btn-danger" id="btn-submit" style="display:none" onclick="submitExam()">Submit ✓</button>
       </div>
     </div>
   </div>
@@ -412,70 +776,69 @@
 
 <!-- RESULTS -->
 <div id="screen-results" class="screen">
-  <div class="result-card" id="result-card">
-    <div style="text-align:center; margin-bottom:10px">
-      <div class="week-badge">Examination Results</div>
-      <div style="font-size:1.1rem; color:var(--navy); font-weight:800" id="result-title">BGEC113</div>
+  <div class="result-grove">
+    <div style="text-align:center;margin-bottom:12px">
+      <div class="season-badge">Examination Results</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--earth-leaf);font-weight:700;margin-top:6px" id="result-title">BGEC113</div>
     </div>
-    <div id="student-result-info" style="background:#f0f4ff; border-radius:10px; padding:14px; font-size:0.9rem; color:var(--navy); margin: 16px 0"></div>
-    <div class="score-display">
-      <div class="grade-badge grade-A" id="grade-badge">A</div>
-      <div class="score-num"><span id="score-got">0</span> / 50</div>
-      <div class="score-sub" id="score-percent"></div>
-      <div class="score-sub" id="time-used-display"></div>
+    <div class="student-leaf" id="student-result-info"></div>
+    <div class="score-bloom">
+      <div class="result-badge grade-A" id="grade-badge">A</div>
+      <div class="score-big"><span id="score-got">0</span> / 50</div>
+      <div class="score-note" id="score-percent"></div>
+      <div class="score-note" id="time-used-display"></div>
     </div>
-    <div class="motivation-box" id="motivation-box">
+    <div class="motive-pod">
       <p id="motivation-text"></p>
-      <small>— HangOut Publications</small>
+      <small>— HangOut Publications · Rooted in Excellence</small>
     </div>
-    <div class="answer-breakdown">
-      <h3>📋 Full Answer Breakdown (Marking Scheme)</h3>
-      <div id="answers-list"></div>
-    </div>
-    <div class="action-btns">
-      <button class="btn btn-primary" onclick="window.print()">🖨️ Print Results</button>
-      <button class="btn btn-whatsapp" onclick="shareWhatsApp()">📱 Share via WhatsApp</button>
-      <button class="btn btn-secondary" onclick="goTo('home')">🏠 Return to Hub</button>
+    <div class="breakdown-h">🍂 Full Answer Breakdown</div>
+    <div id="answers-list"></div>
+    <div class="action-roots">
+      <button class="btn btn-root" onclick="window.print()">🖨️ Print Results</button>
+      <button class="btn btn-moss" onclick="shareWhatsApp()">📱 Share via WhatsApp</button>
+      <button class="btn btn-bark" onclick="goTo('home')">🏠 Return to Grove</button>
     </div>
   </div>
 </div>
 
 <!-- LOCKED -->
 <div id="screen-locked" class="screen">
-  <div class="locked-box">
-    <div style="font-size:4rem; margin-bottom:16px">🔒</div>
-    <h2>Exam Access Locked</h2>
+  <div class="locked-grove">
+    <div style="font-size:4rem;margin-bottom:16px">🔒</div>
+    <h2>Grove Access Sealed</h2>
     <p>You have used all <strong>3 attempts</strong> for this examination.<br><br>
-    To request a new access link, please contact:<br><br>
+    To request new access, please contact:<br><br>
     <strong>📲 HangOut Publications</strong><br>
-    <a href="https://wa.me/233000000000" style="color:var(--navy)">WhatsApp: +233 XXX XXX XXXX</a><br><br>
-    <em>Do not attempt to clear your browser data to bypass this lock.</em>
+    <a href="https://wa.me/233000000000" style="color:var(--earth-sage)">WhatsApp: +233 XXX XXX XXXX</a><br><br>
+    <em>The roots remember everything — clearing cache will not help.</em>
     <br><br>
-    <button class="btn btn-back" onclick="goTo('home')" style="margin-top:12px">← Back to Hub</button>
+    <button class="btn btn-bark" onclick="goTo('home')" style="margin-top:12px">← Back to Grove</button>
     </p>
   </div>
 </div>
 
 <!-- MID-EXAM POPUP -->
-<div class="popup-overlay" id="mid-popup">
-  <div class="popup-card">
-    <h2>⚡ Time to Focus! ⚡</h2>
+<div class="popup-canopy" id="mid-popup">
+  <div class="popup-bud">
+    <h2>🌿 Earth Whispers...</h2>
     <div class="popup-lang" id="popup-lang"></div>
-    <div class="popup-quote" id="popup-quote"></div>
-    <button class="btn btn-primary" onclick="closePopup()">💪 Got It! Continue</button>
+    <div class="popup-wisdom" id="popup-quote"></div>
+    <button class="btn btn-root" onclick="closePopup()">💪 Got It — Back to the Grove</button>
   </div>
 </div>
 
 <!-- CHEAT ALERT -->
-<div class="cheat-overlay" id="cheat-overlay">
-  <div style="font-size:5rem">⚠️</div>
-  <h1>TAB SWITCH DETECTED!</h1>
-  <p>Cheating is not permitted. This incident has been logged.<br>Return to your examination immediately.</p>
+<div class="cheat-vines" id="cheat-overlay">
+  <div style="font-size:4rem;margin-bottom:10px">🌵</div>
+  <h1>⚠ TAB SWITCH DETECTED!</h1>
+  <p>The roots have sensed you left the grove.<br>This incident has been logged by the forest.<br>Return immediately and continue your examination.</p>
   <br>
-  <button class="btn" style="background:white;color:#cc2200;font-size:1.1rem" onclick="dismissCheat()">Return to Exam</button>
+  <button class="btn btn-soil" onclick="dismissCheat()" style="margin-top:10px">Return to Exam</button>
 </div>
 
-<div class="site-footer">HangOut Publications &nbsp;·&nbsp; UPSA &nbsp;|&nbsp; BGEC113 Environmental Management &nbsp;·&nbsp; © 2025/2026</div>
+<div class="earth-footer">HangOut Publications &nbsp;·&nbsp; UPSA &nbsp;·&nbsp; BGEC113 Environmental Management &nbsp;·&nbsp; © 2025/2026</div>
+
 
 <script>
 // ============================================================
@@ -782,8 +1145,8 @@ function renderQuestion() {
   const letters = ['A','B','C','D'];
   q.o.forEach((opt, i) => {
     const li = document.createElement('li');
-    li.className = 'option-item' + (answers[currentQ] === i ? ' selected' : '');
-    li.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    li.className = 'opt-leaf' + (answers[currentQ] === i ? ' selected' : '');
+    li.innerHTML = `<span class="opt-bud">${letters[i]}</span><span>${opt}</span>`;
     li.onclick = () => selectOption(i);
     ul.appendChild(li);
   });
@@ -850,7 +1213,7 @@ function showResults() {
 
   const gb = document.getElementById('grade-badge');
   gb.textContent = grade;
-  gb.className = 'grade-badge grade-' + (grade === 'F' ? 'D' : grade);
+  gb.className = 'result-badge grade-' + grade;
 
   document.getElementById('student-result-info').innerHTML =
     `<strong>Name:</strong> ${student.name} &nbsp; <strong>ID:</strong> ${student.index} &nbsp; <strong>Programme:</strong> ${student.prog} &nbsp; <strong>Exam:</strong> ${WEEK_TITLES[activeWeek].badge}`;
@@ -871,7 +1234,7 @@ function showResults() {
     const correct = q.a;
     const isCorrect = userAns === correct;
     const div = document.createElement('div');
-    div.className = 'ans-item ' + (isCorrect ? 'ans-correct' : 'ans-wrong');
+    div.className = 'ans-pod ' + (isCorrect ? 'ans-correct' : 'ans-wrong');
     div.innerHTML = `
       <div class="ans-q">${i+1}. ${q.q}</div>
       <div class="ans-yours">Your answer: ${userAns !== null ? q.o[userAns] : '⚠️ Not answered'} ${isCorrect ? '✅' : '❌'}</div>
